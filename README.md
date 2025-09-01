@@ -7,7 +7,6 @@ This repository contains relevant coursework and project source code for ITIS-33
 ## Folder Structure
 
 ```
-C:/Users/katze/Documents/GitHub/ITIS-3300/
 ITIS-3300
 ├── GROUP-INFO
 ├── README.md
