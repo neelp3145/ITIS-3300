@@ -1,9 +1,14 @@
 Meeting 1
-Date and time: August 27, 2025  12 AM - 3 PM
-Attendees: Roger Lin, Tyler Quach, Neel Panajkar,Kaksh Patel
+Date and time: August 27, 2025,  12 AM - 3 PM
+Attendees: Roger Lin, Tyler Quach, Neel Panajkar, Kaksh Patel
 
-One group member, Aayush Niroula, was not present at the meeting due to a time conflict. He discussed this with the group beforehand, and we were able to communicate and discuss what we went over online afterwards.
+One group member, Aayush Niroula, was not present at the meeting due to a time conflict. 
+He discussed this with the group beforehand, and we were able to communicate and discuss what we went over online afterwards.
 
-Subjects discussed: As our first meeting, the group reviewed over our choice of the project idea from the previous class (a fast food ordering system) and decided on a name. We discussed the foundational requirements of such a project along with the necessary technology stack. Additionally, we began to work on risk management, the project timeline (visualized in the Gantt Chart), and overall planning.
+Subjects discussed: As our first meeting, the group reviewed our choice of the project idea from the previous class (a fast food ordering system)
+and decided on a name. We discussed the foundational requirements of such a project along with the necessary technology stack. 
+Additionally, we began to work on risk management, the project timeline (visualized in the Gantt Chart), and overall planning.
 
-There was no further meetings for this deliverable, although members of the group stayed in constant contact through Discord to finish up and polish the report and presentation.
+
+There were no further meetings for this deliverable, although members of the group stayed in constant contact through Discord to finish up 
+and polish the report and presentation.
