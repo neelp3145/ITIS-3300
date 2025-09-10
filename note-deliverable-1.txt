@@ -1,0 +1,8 @@
+In this deliverable, the files that were submitted were:
+
+README.md                               - inside the root directory
+note-deliverable-1.txt                  - inside the root directory
+meeting-1.txt                           - inside the "meetings" folder
+placeholder.txt                         - inside the "planning-docs" folder
+placeholder.txt                         - inside the "src" folder
+Lab Rats – Deliverable 1 Report.docx    - inside the "project-reports" folder
