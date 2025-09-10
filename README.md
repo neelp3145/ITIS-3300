@@ -10,6 +10,7 @@ This repository contains relevant coursework and project source code for ITIS-33
 ITIS-3300
 ├── GROUP-INFO
 ├── README.md
+├── note-deliverable-1.txt
 ├── src
 │   └── placeholder.txt
 ├── project-reports
