@@ -11,13 +11,16 @@ ITIS-3300
 ├── GROUP-INFO
 ├── README.md
 ├── note-deliverable-1.txt
+├── note-deliverable-2.txt
 ├── src
 │   └── placeholder.txt
 ├── project-reports
 │   └── Lab Rats – Deliverable 1 Report.docx
+│   └── Lab Rats - Deliverable 2 SRS.docx
 ├── plannings-docs
 │   └── placeholder.txt
 └── meetings
     └── meeting-1.txt
+    └── meeting-2.txt
 
 ```

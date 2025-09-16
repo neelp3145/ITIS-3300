@@ -1,0 +1,5 @@
+In this deliverable, the files that were submitted were:
+
+note-deliverable-2.txt                  - inside the root directory
+meeting-2.txt                           - inside the "meetings" folder
+Lab Rats – Deliverable 2 SRS.docx       - inside the "project-reports" folder

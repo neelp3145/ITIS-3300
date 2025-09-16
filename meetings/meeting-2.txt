@@ -1,0 +1,9 @@
+Meeting 2
+Date and Time: September 10, 2025 1pm - 1:25pm
+Attendees: Roger Lin and Aayush Niroula
+
+Subjects discussed: During this meeting, we discussed the general approach to the 
+System Requirements and Specification Document and outlined some general ideas
+for the diagrams.
+
+There were no other meetings for this deliverabled and additional communication was conducted through Discord.
