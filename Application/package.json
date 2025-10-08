@@ -1,0 +1,20 @@
+{
+  "name": "fastbyte-application",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "npm install --workspaces",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run start",
+    "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "build": "npm --prefix frontend run build",
+    "start": "node backend/index.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
