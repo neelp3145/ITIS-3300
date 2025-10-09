@@ -4,7 +4,7 @@ const cors = require("cors");
 const { url } = require("inspector");
 const { create } = require("domain");
 const customerRouter = require("./routes/customerRoutes");
-const restaurantRouter = require("./routes/restaurantRoutes");
+const employeeRouter = require("./routes/employeeRoutes");
 // const {MongoClient, ServerApiVersion} = require('mongodb');
 // const uri = "mongodb+srv://fastbyte:ITIS-3300@fastbyte.yzbabw6.mongodb.net/?retryWrites=true&w=majority&appName=FastByte";
 const app = express();
@@ -43,4 +43,4 @@ app.listen(PORT, () => {
 });
 
 app.use("/customer", customerRouter);
-app.use("/restaurant", restaurantRouter);
+app.use("/employee", employeeRouter);
