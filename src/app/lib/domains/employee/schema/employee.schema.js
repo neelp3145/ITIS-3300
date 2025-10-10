@@ -11,7 +11,7 @@ const employeeSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: true,
-      trim: true, // removes leading/trailing spaces
+      trim: true,
     },
 
     // Employee's last name
@@ -25,7 +25,7 @@ const employeeSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, // ensures no duplicate emails
+      unique: true,
       lowercase: true,
       trim: true,
     },
@@ -39,20 +39,20 @@ const employeeSchema = new mongoose.Schema(
     // Defines the employee's role in the restaurant
     role: {
       type: String,
-      enum: ROLES, // only one of the allowed roles can be selected
+      enum: ROLES,
       required: true,
     },
 
     // Whether the employee is currently working at the restaurant
     isActive: {
       type: Boolean,
-      default: true, // newly added employees are active by default
+      default: true,
     },
 
     // Date when the employee was hired
     hireDate: {
       type: Date,
-      default: Date.now, // automatically set to current date
+      default: Date.now,
     },
 
     // (Optional) For authentication later: store password hash only
@@ -60,8 +60,4 @@ const employeeSchema = new mongoose.Schema(
   }
 );
 
-
-
-// Export the schema as a model to use in routes/controllers
-// Usage example: const Employee = require("./models/EmployeeModel");
 module.exports = mongoose.model("Employee", employeeSchema);

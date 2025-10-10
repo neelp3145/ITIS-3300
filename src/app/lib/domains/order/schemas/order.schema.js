@@ -4,15 +4,15 @@ const mongoose = require("mongoose");
 // --- Sub-schema: Represents an individual item within an order ---
 const orderItemSchema = new mongoose.Schema({
   item: {
-    type: mongoose.Schema.Types.ObjectId, // references an Item document
-    ref: "Item",                          // link to Item model
-    required: true,                       // every order item must have an item
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "MenuItem",
+    required: true,
   },
   quantity: {
     type: Number,
     required: true,
-    min: 1,       // must order at least one item
-    default: 1,   // defaults to 1 if not provided
+    min: 1,
+    default: 1,
   },
 });
 
@@ -22,7 +22,7 @@ const orderSchema = new mongoose.Schema(
     // Reference to the customer who placed the order
     customer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",  // link to Customer model
+      ref: "Customer",
       required: true,
     },
 
@@ -33,27 +33,27 @@ const orderSchema = new mongoose.Schema(
     totalPrice: {
       type: Number,
       required: true,
-      min: 0, // cannot be negative
+      min: 0,
     },
 
     // Current status of the order
     status: {
       type: String,
-      enum: ["pending", "preparing", "ready", "completed", "cancelled"], // only these states allowed
+      enum: ["pending", "preparing", "ready", "completed", "cancelled"],
       default: "pending",
     },
 
     // Payment method chosen by the customer
     paymentMethod: {
       type: String,
-      enum: ["cash", "card", "online"], // accepted payment methods
+      enum: ["cash", "card", "online"],
       default: "cash",
     },
 
     // Time the order was created
     createdAt: {
       type: Date,
-      default: Date.now, // automatically sets current timestamp
+      default: Date.now,
     },
   },
   {
@@ -62,6 +62,4 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-// Export the schema as a model to use in routes/controllers
-// Usage example: const Order = require("./models/orderModel");
 module.exports = mongoose.model("Order", orderSchema);

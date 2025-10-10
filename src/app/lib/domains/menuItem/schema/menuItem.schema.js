@@ -6,21 +6,21 @@ const itemSchema = new mongoose.Schema({
   // Name of the food item (e.g., "Pepperoni Pizza", "Cheeseburger")
   name: {
     type: String,
-    required: true, // every item must have a name
-    trim: true,     // removes extra spaces from beginning and end
+    required: true, 
+    trim: true,
   },
 
   // Optional description for the item
   description: {
     type: String,
-    trim: true, // keeps description text clean
+    trim: true,
   },
 
   // Price of the item in USD (or relevant currency)
   price: {
     type: Number,
-    required: true, // price is mandatory
-    min: 0,         // prevents negative values
+    required: true,
+    min: 0,        
   },
 
   // Category of the item for better organization or filtering
@@ -34,14 +34,14 @@ const itemSchema = new mongoose.Schema({
       "Dessert",
       "Sides",
       "Other",
-    ], // restricts to valid categories only
+    ],
     default: "Other",
   },
 
   // Indicates if the item is currently available to order
   available: {
     type: Boolean,
-    default: true, // true = available by default
+    default: true,
   },
 
   // Optional image URL to display in the frontend menu
@@ -51,6 +51,4 @@ const itemSchema = new mongoose.Schema({
   },
 });
 
-// Export the model for use in routes/controllers
-// Usage example: const Item = require("./models/itemModel");
 module.exports = mongoose.model("Item", itemSchema);

@@ -7,25 +7,24 @@ const Schema = mongoose.Schema;
 // Define the schema for Customer documents
 const customerSchema = new Schema(
   {
-    // --- Basic Information ---
     name: {
       type: String,
-      required: true, // name is mandatory
-      trim: true,     // removes extra whitespace
+      required: true,
+      trim: true,
     },
 
     email: {
       type: String,
-      required: true, // email is mandatory
-      unique: true,   // ensures no duplicate emails
-      lowercase: true, // converts to lowercase before saving
+      required: true,
+      unique: true,
+      lowercase: true, 
       trim: true,
     },
 
     password: {
       type: String,
       required: true,
-      minlength: 6, // ensures password has at least 6 characters (correct spelling)
+      minlength: 6, 
     },
 
     // --- Address Object ---
@@ -55,6 +54,4 @@ const customerSchema = new Schema(
   }
 );
 
-// Export the schema as a Mongoose model
-// This makes it importable as: const Customer = require("./models/customerModel");
 module.exports = mongoose.model("Customer", customerSchema);
