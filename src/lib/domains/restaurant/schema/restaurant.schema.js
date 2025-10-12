@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 const restaurantSchema = new Schema({
     name: { type: String, required: true, trim: true },

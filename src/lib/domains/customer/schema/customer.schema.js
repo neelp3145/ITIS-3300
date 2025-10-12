@@ -1,4 +1,3 @@
-// src/lib/domains/user/schema/customer.schema.js
 import mongoose from "mongoose";
 import User from "./user.base.js";
 
