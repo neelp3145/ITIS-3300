@@ -1,4 +1,3 @@
-// src/lib/domains/delivery/schema/delivery.schema.js
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 

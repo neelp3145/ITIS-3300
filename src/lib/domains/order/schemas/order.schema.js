@@ -1,9 +1,9 @@
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const mongoose = require("mongoose");
-
-const orderItemSchema = new mongoose.Schema({
+const orderItemSchema = new Schema({
   item: {
-    type: mongoose.Schema.Types.ObjectId, 
+    type: Schema.Types.ObjectId, 
     ref: "MenuItem",
     required: true,
   },
@@ -15,34 +15,29 @@ const orderItemSchema = new mongoose.Schema({
   },
 });
 
-const orderSchema = new mongoose.Schema(
+const orderSchema = new Schema(
   {
     customer: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Customer",
       required: true,
     },
-
     items: [orderItemSchema],
-
     totalPrice: {
       type: Number,
       required: true,
       min: 0,
     },
-
     status: {
       type: String,
       enum: ["pending", "preparing", "ready", "completed", "cancelled"],
       default: "pending",
     },
-
     paymentMethod: {
       type: String,
       enum: ["cash", "card", "online"],
       default: "cash",
     },
-
     createdAt: {
       type: Date,
       default: Date.now,

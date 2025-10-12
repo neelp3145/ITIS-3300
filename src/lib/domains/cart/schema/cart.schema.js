@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 const cartItemSchema = new Schema({
     item: { type: Schema.Types.ObjectId, ref: "MenuItem", required: true },
