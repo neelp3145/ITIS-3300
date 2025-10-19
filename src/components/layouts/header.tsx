@@ -8,10 +8,11 @@ interface HeaderProps {
 }
 
 const headerStyle: React.CSSProperties = {
-    background: '#0f172a',
+    background: '#8B0000',
     color: '#fff',
     padding: '0.75rem 1rem',
     boxShadow: '0 1px 0 rgba(255,255,255,0.03)',
+    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
 };
 
 const containerStyle: React.CSSProperties = {

@@ -27,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({
     };
 
     const containerStyle: React.CSSProperties = {
-        background: "linear-gradient(180deg, #2b2b2b, #1b1b1b)",
+        background: "linear-gradient(180deg, #252525, #1b1b1b)",
         color: "#fff",
         padding: "2rem 1.25rem",
         fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
@@ -54,24 +54,12 @@ const Footer: React.FC<FooterProps> = ({
         color: "#ddd",
     };
 
-    const socialBtnStyle: React.CSSProperties = {
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 36,
-        height: 36,
-        borderRadius: 6,
-        background: "rgba(255,255,255,0.06)",
-        marginRight: 8,
-        color: "#fff",
-        textDecoration: "none",
-    };
 
     return (
         <footer role="contentinfo" aria-label={`${companyName} footer`} style={containerStyle}>
             <div style={gridStyle}>
                 <div>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 800 }}>{companyName}</div>
+                    <div style={{ fontSize: "1.25rem", fontWeight: 700 }}>{companyName}</div>
                     <p style={smallStyle}>
                         Craving satisfaction at 2 AM? We've got you covered. 
                         Gourmet burgers, crispy fries, and cheesy pizza served hot until the early hours. Your late-night hunger solution.
