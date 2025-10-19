@@ -1,4 +1,15 @@
 import React from "react";
+import {
+    Box,
+    SimpleGrid,
+    Heading,
+    Text,
+    Link,
+    VStack,
+    HStack,
+    List,
+    ListItem,
+} from "@chakra-ui/react";
 
 type FooterProps = {
     companyName?: string;
@@ -21,98 +32,150 @@ const Footer: React.FC<FooterProps> = ({
 }) => {
     const year = new Date().getFullYear();
 
-    const linkStyle: React.CSSProperties = {
-        color: "inherit",
-        textDecoration: "none",
-    };
-
-    const containerStyle: React.CSSProperties = {
-        background: "linear-gradient(180deg, #252525, #1b1b1b)",
-        color: "#fff",
-        padding: "2rem 1.25rem",
-        fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
-    };
-
-    const gridStyle: React.CSSProperties = {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-        gap: "1.25rem",
-        maxWidth: 1100,
-        margin: "0 auto",
-        alignItems: "start",
-    };
-
-    const sectionTitleStyle: React.CSSProperties = {
-        fontWeight: 700,
-        marginBottom: "0.5rem",
-        fontSize: "0.95rem",
-    };
-
-    const smallStyle: React.CSSProperties = {
-        fontSize: "0.9rem",
-        lineHeight: 1.6,
-        color: "#ddd",
-    };
-
-
     return (
-        <footer role="contentinfo" aria-label={`${companyName} footer`} style={containerStyle}>
-            <div style={gridStyle}>
-                <div>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700 }}>{companyName}</div>
-                    <p style={smallStyle}>
-                        Craving satisfaction at 2 AM? We've got you covered. 
-                        Gourmet burgers, crispy fries, and cheesy pizza served hot until the early hours. Your late-night hunger solution.
-                    </p>
-                </div>
+        <Box
+            as="footer"
+            role="contentinfo"
+            aria-label={`${companyName} footer`}
+            bgGradient="linear(to-b, #252525, #1b1b1b)"
+            color="white"
+            py={{ base: 8, md: 10 }}
+            px={{ base: 4, md: 6 }}
+        >
+            <SimpleGrid
+                columns={{ base: 1, md: 2, lg: 4 }}
+                gap={6}
+                maxW="1100px"
+                mx="auto"
+                alignItems="start"
+            >
+                {/* Company Info */}
+                <VStack align="start" gap={3}>
+                    <Heading size="md">{companyName}</Heading>
+                    <Text fontSize="sm" color="gray.300" lineHeight="tall">
+                        Craving satisfaction at 2 AM? We&apos;ve got you covered. 
+                        Gourmet burgers, crispy fries, and cheesy pizza served hot until the early hours. 
+                        Your late-night hunger solution.
+                    </Text>
+                </VStack>
 
-                <div>
-                    <div style={sectionTitleStyle}>Hours</div>
-                    <div style={smallStyle}>
-                        <div>Mon-Fri: 11:00 AM — 4:00 AM</div>
-                        <div>Sat-Sun: 12:00 AM — 4:00 AM</div>
-                    </div>
-                </div>
+                {/* Hours */}
+                <VStack align="start" gap={3}>
+                    <Heading size="sm">Hours</Heading>
+                    <VStack align="start" gap={1} fontSize="sm" color="gray.300">
+                        <Text>Mon-Fri: 11:00 AM — 4:00 AM</Text>
+                        <Text>Sat-Sun: 12:00 AM — 4:00 AM</Text>
+                    </VStack>
+                </VStack>
 
-                <div>
-                    <div style={sectionTitleStyle}>Location</div>
-                    <address style={smallStyle}>
-                        <div>{address.line1}</div>
-                        <div>{address.city}</div>
-                        <div style={{ marginTop: 8 }}>
+                {/* Location */}
+                <VStack align="start" gap={3}>
+                    <Heading size="sm">Location</Heading>
+                    <Box as="address" fontStyle="normal" fontSize="sm" color="gray.300">
+                        <Text>{address.line1}</Text>
+                        <Text>{address.city}</Text>
+                        <VStack align="start" gap={1} mt={2}>
                             {address.phone && (
-                                <div>
-                                    Phone: <a style={linkStyle} href={`tel:${address.phone.replace(/[^\d+]/g, "")}`}>{address.phone}</a>
-                                </div>
+                                <Text>
+                                    Phone:{" "}
+                                    <Link
+                                        href={`tel:${address.phone.replace(/[^\d+]/g, "")}`}
+                                        color="white"
+                                        textDecoration="none"
+                                        _hover={{ textDecoration: "underline" }}
+                                    >
+                                        {address.phone}
+                                    </Link>
+                                </Text>
                             )}
                             {address.email && (
-                                <div>
-                                    Email: <a style={linkStyle} href={`mailto:${address.email}`}>{address.email}</a>
-                                </div>
+                                <Text>
+                                    Email:{" "}
+                                    <Link
+                                        href={`mailto:${address.email}`}
+                                        color="white"
+                                        textDecoration="none"
+                                        _hover={{ textDecoration: "underline" }}
+                                    >
+                                        {address.email}
+                                    </Link>
+                                </Text>
                             )}
-                        </div>
-                    </address>
-                </div>
+                        </VStack>
+                    </Box>
+                </VStack>
 
-                <nav aria-label="Footer navigation">
-                    <div style={sectionTitleStyle}>Explore</div>
-                    <ul style={{ listStyle: "none", padding: 0, margin: 0, ...smallStyle }}>
-                        <li><a style={linkStyle} href="/menu">Menu</a></li>
-                        <li><a style={linkStyle} href="/contact">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
+                {/* Navigation */}
+                <VStack as="nav" align="start" gap={3} aria-label="Footer navigation">
+                    <Heading size="sm">Explore</Heading>
+                    <List.Root gap={2} fontSize="sm" color="gray.300" listStyleType="none">
+                        <ListItem>
+                            <Link
+                                href="/menu"
+                                color="white"
+                                textDecoration="none"
+                                _hover={{ textDecoration: "underline" }}
+                            >
+                                Menu
+                            </Link>
+                        </ListItem>
+                        <ListItem>
+                            <Link
+                                href="/contact"
+                                color="white"
+                                textDecoration="none"
+                                _hover={{ textDecoration: "underline" }}
+                            >
+                                Contact
+                            </Link>
+                        </ListItem>
+                        <ListItem>
+                            <Link
+                                href="/about"
+                                color="white"
+                                textDecoration="none"
+                                _hover={{ textDecoration: "underline" }}
+                            >
+                                About Us
+                            </Link>
+                        </ListItem>
+                    </List.Root>
+                </VStack>
+            </SimpleGrid>
 
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: "1.25rem", paddingTop: "1rem", textAlign: "center", color: "#bbb", fontSize: "0.9rem" }}>
-                <div>
+            {/* Bottom Section */}
+            <Box
+                borderTop="1px solid"
+                borderColor="whiteAlpha.200"
+                mt={8}
+                pt={6}
+                textAlign="center"
+                color="gray.400"
+                fontSize="sm"
+            >
+                <Text>
                     &copy; {year} {companyName}. All rights reserved.
-                </div>
-                <div style={{ marginTop: 6 }}>
-                    <a style={{ ...linkStyle, marginRight: 12 }} href="/privacy">Privacy</a>
-                    <a style={linkStyle} href="/terms">Terms</a>
-                </div>
-            </div>
-        </footer>
+                </Text>
+                <HStack justify="center" gap={4} mt={2}>
+                    <Link
+                        href="/privacy"
+                        color="gray.400"
+                        textDecoration="none"
+                        _hover={{ textDecoration: "underline", color: "white" }}
+                    >
+                        Privacy
+                    </Link>
+                    <Link
+                        href="/terms"
+                        color="gray.400"
+                        textDecoration="none"
+                        _hover={{ textDecoration: "underline", color: "white" }}
+                    >
+                        Terms
+                    </Link>
+                </HStack>
+            </Box>
+        </Box>
     );
 };
 

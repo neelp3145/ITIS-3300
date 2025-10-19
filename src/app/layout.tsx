@@ -1,6 +1,7 @@
 import { Provider } from "@/components/ui/provider"
 import Header from "@/components/layouts/header"
 import Footer from "@/components/layouts/footer"
+
 import { ReactNode } from "react"
 
 export default function RootLayout(props: { children: ReactNode }) {
@@ -8,9 +9,11 @@ export default function RootLayout(props: { children: ReactNode }) {
   return (
     <html suppressHydrationWarning>
       <body>
-        <Header />
-        <Provider>{children}</Provider>
-        <Footer />
+        <Provider>
+          <Header />
+            {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   )

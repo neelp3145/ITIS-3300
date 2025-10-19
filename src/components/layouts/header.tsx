@@ -1,63 +1,35 @@
 import React from 'react';
+import Image from 'next/image'
+import fastbiteLogo from '@/assets/images/fastbite-logo.png'
 
-type NavLink = { label: string; href: string };
+import { Box, Flex, HStack, Link } from '@chakra-ui/react';
 
-interface HeaderProps {
-    title?: string;
-    className?: string;
-}
-
-const headerStyle: React.CSSProperties = {
-    background: '#8B0000',
-    color: '#fff',
-    padding: '0.75rem 1rem',
-    boxShadow: '0 1px 0 rgba(255,255,255,0.03)',
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
-};
-
-const containerStyle: React.CSSProperties = {
-    maxWidth: 1100,
-    margin: '0 auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '1rem',
-};
-
-const navListStyle: React.CSSProperties = {
-    display: 'flex',
-    gap: '0.75rem',
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-};
-
-const linkStyle: React.CSSProperties = {
-    color: 'inherit',
-    textDecoration: 'none',
-    fontSize: '0.95rem',
-};
-
-const Header: React.FC<HeaderProps> = ({ title = 'FastBite', className }) => {
+const Header = () => {
     return (
-        <header style={headerStyle} className={className}>
-            <div style={containerStyle}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem' }}>
-                    <span style={{ fontWeight: 700, fontSize: '1.125rem' }}>{title}</span>
-                    <small style={{ color: '#9aa6c0' }}>v1</small>
-                </div>
-
-                <nav aria-label="Main navigation">
-                    <ul style={navListStyle}>
-                        <div>
-                            <li><a style={linkStyle} href="/">Home</a></li>
-                            <li><a style={linkStyle} href="/about">About</a></li>
-                            <li><a style={linkStyle} href="/contact">Contact</a></li>
-                        </div>
-                    </ul>
+        <Box as="header" bg="gray.800" color="white" py={4}>
+            <Flex maxW="1200px" mx="auto" align="center" justify="space-between">
+                {/* Logo */}
+                <Image src={fastbiteLogo} alt="FastBite Logo" width={100} height={40} priority />
+                
+                {/* Navigation Links */}
+                <nav>
+                    <HStack gap={6} align="center">
+                        <Link href="/" _hover={{ textDecoration: 'underline', color: 'gray.300' }}>
+                            Home
+                        </Link>
+                        <Link href="/menu" _hover={{ textDecoration: 'underline', color: 'gray.300' }}>
+                            Menu
+                        </Link>
+                        <Link href="/contact" _hover={{ textDecoration: 'underline', color: 'gray.300' }}>
+                            Contact
+                        </Link>
+                        <Link href="/about" _hover={{ textDecoration: 'underline', color: 'gray.300' }}>
+                            About Us
+                        </Link>
+                    </HStack>
                 </nav>
-            </div>
-        </header>
+            </Flex>
+        </Box>
     );
 };
 
