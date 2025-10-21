@@ -32,27 +32,69 @@ const Footer: React.FC<FooterProps> = ({
 }) => {
     const year = new Date().getFullYear();
 
+    const footerStyle = {
+        bg: "gray.800",
+        color: "white",
+        py: { base: 8, md: 10 },
+        px: { base: 4, md: 6 },
+    }
+
+    const gridStyle = {
+        columns: { base: 1, md: 2, lg: 4 },
+        gap: 6,
+        maxW: "1100px",
+        mx: "auto",
+        alignItems: "start",
+    }
+
+    const linkStyle = {
+        color: "white",
+        textDecoration: "none",
+        _hover: { textDecoration: "underline" },
+    };
+    
+    const companyInfoStyle = {
+        fontSize: "sm",
+        color: "gray.300",
+        lineHeight: "tall" 
+    };
+
+    const sectionStyle = {
+        fontSize: "sm",
+        color: "gray.300",
+        listStyleType: "none",
+    };
+    
+    const bottomStyle = {
+        borderTop: "1px solid",
+        borderColor: "whiteAlpha.200",
+        mt: 8,
+        pt: 6,
+        textAlign: "center",
+        color: "gray.400",
+        fontSize: "sm"
+    };
+
+    const bottomLinkStyle = {
+        color: "gray.400",
+        textDecoration: "none",
+        _hover: { textDecoration: "underline", color: "white" },
+    };
+
     return (
         <Box
             as="footer"
             role="contentinfo"
             aria-label={`${companyName} footer`}
-            bg="gray.800"
-            color="white"
-            py={{ base: 8, md: 10 }}
-            px={{ base: 4, md: 6 }}
+            css={footerStyle}
         >
             <SimpleGrid
-                columns={{ base: 1, md: 2, lg: 4 }}
-                gap={6}
-                maxW="1100px"
-                mx="auto"
-                alignItems="start"
+                {...gridStyle}
             >
                 {/* Company Info */}
                 <VStack align="start" gap={3}>
                     <Heading size="md">{companyName}</Heading>
-                    <Text fontSize="sm" color="gray.300" lineHeight="tall">
+                    <Text {...companyInfoStyle}>
                         Craving satisfaction at 2 AM? We&apos;ve got you covered. 
                         Gourmet burgers, crispy fries, and cheesy pizza served hot until the early hours. 
                         Your late-night hunger solution.
@@ -62,7 +104,7 @@ const Footer: React.FC<FooterProps> = ({
                 {/* Hours */}
                 <VStack align="start" gap={3}>
                     <Heading size="sm">Hours</Heading>
-                    <VStack align="start" gap={1} fontSize="sm" color="gray.300">
+                    <VStack align="start" {...sectionStyle}>
                         <Text>Mon-Fri: 11:00 AM — 4:00 AM</Text>
                         <Text>Sat-Sun: 12:00 AM — 4:00 AM</Text>
                     </VStack>
@@ -71,7 +113,7 @@ const Footer: React.FC<FooterProps> = ({
                 {/* Location */}
                 <VStack align="start" gap={3}>
                     <Heading size="sm">Location</Heading>
-                    <Box as="address" fontStyle="normal" fontSize="sm" color="gray.300">
+                    <Box as="address" {...sectionStyle}>
                         <Text>{address.line1}</Text>
                         <Text>{address.city}</Text>
                         <VStack align="start" gap={1} mt={2}>
@@ -80,9 +122,7 @@ const Footer: React.FC<FooterProps> = ({
                                     Phone:{" "}
                                     <Link
                                         href={`tel:${address.phone.replace(/[^\d+]/g, "")}`}
-                                        color="white"
-                                        textDecoration="none"
-                                        _hover={{ textDecoration: "underline" }}
+                                        css={linkStyle}
                                     >
                                         {address.phone}
                                     </Link>
@@ -93,9 +133,7 @@ const Footer: React.FC<FooterProps> = ({
                                     Email:{" "}
                                     <Link
                                         href={`mailto:${address.email}`}
-                                        color="white"
-                                        textDecoration="none"
-                                        _hover={{ textDecoration: "underline" }}
+                                        css={linkStyle}
                                     >
                                         {address.email}
                                     </Link>
@@ -108,13 +146,11 @@ const Footer: React.FC<FooterProps> = ({
                 {/* Navigation */}
                 <VStack as="nav" align="start" gap={3} aria-label="Footer navigation">
                     <Heading size="sm">Explore</Heading>
-                    <List.Root gap={2} fontSize="sm" color="gray.300" listStyleType="none">
+                    <List.Root gap={2} {...sectionStyle}>
                         <ListItem>
                             <Link
                                 href="/menu"
-                                color="white"
-                                textDecoration="none"
-                                _hover={{ textDecoration: "underline" }}
+                                css={linkStyle}
                             >
                                 Menu
                             </Link>
@@ -122,9 +158,7 @@ const Footer: React.FC<FooterProps> = ({
                         <ListItem>
                             <Link
                                 href="/contact"
-                                color="white"
-                                textDecoration="none"
-                                _hover={{ textDecoration: "underline" }}
+                                css={linkStyle}
                             >
                                 Contact
                             </Link>
@@ -132,9 +166,7 @@ const Footer: React.FC<FooterProps> = ({
                         <ListItem>
                             <Link
                                 href="/about"
-                                color="white"
-                                textDecoration="none"
-                                _hover={{ textDecoration: "underline" }}
+                                css={linkStyle}
                             >
                                 About Us
                             </Link>
@@ -144,32 +176,20 @@ const Footer: React.FC<FooterProps> = ({
             </SimpleGrid>
 
             {/* Bottom Section */}
-            <Box
-                borderTop="1px solid"
-                borderColor="whiteAlpha.200"
-                mt={8}
-                pt={6}
-                textAlign="center"
-                color="gray.400"
-                fontSize="sm"
-            >
+            <Box css={bottomStyle}>
                 <Text>
                     &copy; {year} {companyName}. All rights reserved.
                 </Text>
                 <HStack justify="center" gap={4} mt={2}>
                     <Link
                         href="/privacy"
-                        color="gray.400"
-                        textDecoration="none"
-                        _hover={{ textDecoration: "underline", color: "white" }}
+                        css={bottomLinkStyle}
                     >
                         Privacy
                     </Link>
                     <Link
                         href="/terms"
-                        color="gray.400"
-                        textDecoration="none"
-                        _hover={{ textDecoration: "underline", color: "white" }}
+                        css={bottomLinkStyle}
                     >
                         Terms
                     </Link>

@@ -1,8 +1,30 @@
 import { Box, Text, Input, Button, Field, Fieldset, Stack, NativeSelect, For, Textarea} from "@chakra-ui/react";
 
+
 const Contact = () => {
+  const buttonStyle = {
+    size: "md",
+    bg: "#ff6b35",
+    m: 2,
+    _hover: { bg: "#e55b25" },
+  };
+
+  const mainStyle = {
+    position: "relative",
+    maxW: "800px",
+    mx: "auto",
+    py: 10,
+    px: 4,
+};
+
+const formStyle={
+    mt:6,
+    mb:4,
+    gap:4
+} 
+
     return (
-        <Box as="main" role="contentinfo" maxW="800px" mx="auto" py={10} px={4}>
+        <Box as="main" role="contentinfo" {...mainStyle}>
             <form>
                 <Fieldset.Root>
                     <Stack>
@@ -11,7 +33,7 @@ const Contact = () => {
                         <Fieldset.HelperText>Fill in the fields below</Fieldset.HelperText>
                     </Stack>
 
-                    <Fieldset.Content mt={6} mb={4} gap={4}>
+                    <Fieldset.Content css={formStyle}>
                         <Field.Root>
                             <Field.Label htmlFor="name">Name</Field.Label>
                             <Input name="name" type="text" placeholder="Your Name" required />
@@ -42,7 +64,7 @@ const Contact = () => {
                             <Textarea placeholder="Your message" required />
                         </Field.Root>
                     </Fieldset.Content>
-                    <Button size="md" bg="#ff6b35" _hover={{ bg: "#e55b25" }} m={2} type="submit">
+                    <Button type="submit" css={buttonStyle}>
                         Submit
                     </Button>
                 </Fieldset.Root>
