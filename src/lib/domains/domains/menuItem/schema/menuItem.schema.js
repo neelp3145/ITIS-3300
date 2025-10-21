@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const menuItemSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true, 
     trim: true,
   },
   description: {
@@ -14,11 +14,19 @@ const menuItemSchema = new Schema({
   price: {
     type: Number,
     required: true,
-    min: 0,
+    min: 0,        
   },
   category: {
     type: String,
-    enum: ["Pizza", "Burger", "Wings", "Drink", "Dessert", "Sides", "Other"],
+    enum: [
+      "Pizza",
+      "Burger",
+      "Wings",
+      "Drink",
+      "Dessert",
+      "Sides",
+      "Other",
+    ],
     default: "Other",
   },
   available: {

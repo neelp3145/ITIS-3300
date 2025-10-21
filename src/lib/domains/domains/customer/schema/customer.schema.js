@@ -6,11 +6,11 @@ const { Schema } = mongoose;
 const AddressSchema = new Schema(
   {
     street: { type: String },
-    city: { type: String },
-    state: { type: String },
-    zip: { type: String },
+    city:   { type: String },
+    state:  { type: String },
+    zip:    { type: String },
   },
-  { _id: false },
+  { _id: false }
 );
 
 const CustomerSchema = new Schema({

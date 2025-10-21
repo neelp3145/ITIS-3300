@@ -1,22 +1,17 @@
 import React from "react";
-import Image from "next/image";
-import heroImage from "@/assets/images/hero-image.jpg";
-import {
-  Box,
-  Link,
-  Heading,
-  Text,
-  Button,
-  AbsoluteCenter,
-} from "@chakra-ui/react";
+import Image from 'next/image'
+import heroImage from '@/assets/images/hero-image.jpg'
+import { Box, Link, Heading, Text, Button, AbsoluteCenter} from "@chakra-ui/react";
+
 
 const Home: React.FC = () => {
+
   const mainStyle = {
     position: "relative",
     width: "100%",
     height: "80vh",
     overflow: "hidden",
-  };
+  }
 
   const mainContentStyle = {
     position: "relative",
@@ -36,6 +31,7 @@ const Home: React.FC = () => {
   };
 
   return (
+
     <Box as="main" role="contentInfo" css={mainStyle}>
       <Image
         src={heroImage}
@@ -48,17 +44,13 @@ const Home: React.FC = () => {
         priority
       />
       <Box css={mainContentStyle}>
-        <Heading size="6xl" m={2}>
-          FastBite
-        </Heading>
-        <Text textStyle="3xl" m={2}>
-          Your go-to spot for midnight cravings
-        </Text>
-        <Button css={buttonStyle}>
-          <Link href="/menu" target="_self" position="relative">
-            <Text>Explore Our Menu</Text>
-          </Link>
-        </Button>
+        <Heading size="6xl" m={2}>FastBite</Heading>
+          <Text textStyle="3xl" m={2}>Your go-to spot for midnight cravings</Text>
+          <Button css={buttonStyle}>
+            <Link href="/menu" target="_self" position="relative">
+              <Text>Explore Our Menu</Text>
+            </Link>
+          </Button>
       </Box>
     </Box>
   );
