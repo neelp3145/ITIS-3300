@@ -9,8 +9,10 @@ const Header = () => {
         <Box as="header" role="contentinfo" bg="gray.800" color="white" py={4}>
             <Flex maxW="1200px" mx="auto" align="center" justify="space-between">
                 {/* Logo */}
-                <Image src={fastbiteLogo} alt="FastBite Logo" width={100} height={40} priority />
-                
+                <Link href="/" display="flex" alignItems="center">
+                    <Image src={fastbiteLogo} alt="FastBite Logo" width={100} height={40} priority />
+                </Link>
+
                 {/* Navigation Links */}
                 <nav>
                     <HStack gap={6} align="center">
