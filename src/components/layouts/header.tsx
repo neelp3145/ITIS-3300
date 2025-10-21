@@ -6,7 +6,7 @@ import { Box, Flex, HStack, Link } from '@chakra-ui/react';
 
 const Header = () => {
     return (
-        <Box as="header" bg="gray.800" color="white" py={4}>
+        <Box as="header" role="contentinfo" bg="gray.800" color="white" py={4}>
             <Flex maxW="1200px" mx="auto" align="center" justify="space-between">
                 {/* Logo */}
                 <Image src={fastbiteLogo} alt="FastBite Logo" width={100} height={40} priority />

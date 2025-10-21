@@ -1,49 +1,13 @@
 import React from "react";
 import Image from 'next/image'
 import heroImage from '@/assets/images/hero-image.jpg'
+import { Box, Link, Heading, Text, Button, AbsoluteCenter} from "@chakra-ui/react";
 
 
 const Home: React.FC = () => {
-  const bodyStyle: React.CSSProperties = {
-     position: 'relative',
-     width: '100%', 
-     height: '80vh', 
-     overflow: 'hidden' 
-  };
-
-  const heroContentStyle: React.CSSProperties = {
-    color: "white",
-    textAlign: "center",
-    paddingTop: "10%",
-    textShadow: "2px 2px 4px #000000",
-    fontFamily: "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
-    position: "relative",
-  };
-
-  const heroHeadingStyle: React.CSSProperties = {
-    fontSize: "5rem",
-    marginBottom: "1rem",
-  };
-
-  const heroParagraphStyle: React.CSSProperties = {
-    fontSize: "1.5rem",
-    marginBottom: "2rem",
-  };
-
-  const anchorStyle: React.CSSProperties = {
-    color: "white",
-    textDecoration: "none",
-    backgroundColor: "#ff6b35",
-    padding: "0.75rem 1.5rem",
-    borderRadius: "25px",
-    fontWeight: 600,
-    fontSize: "1.25rem",
-    transition: "all 0.3s ease-in-out",
-  };
 
   return (
-    <>
-    <div style={bodyStyle}>
+    <Box as="main" role="contentInfo" height="80vh" width="100%" position="relative" overflow="hidden">
       <Image 
         src={heroImage} 
         alt="Hamburger on a wooden table with fries" 
@@ -54,16 +18,17 @@ const Home: React.FC = () => {
         }}
         priority
       />
-      <div style={heroContentStyle}>
-        <h2 style={heroHeadingStyle}>FastBite</h2>
-        <p style={heroParagraphStyle}>Your go-to spot for midnight cravings</p>
-        <a href="/menu" target="_self" style={anchorStyle}>
-          <span>Explore Our Menu</span>
-        </a>
-      </div>
-    </div>
-  </>
-  )
+      <Box color="white" textAlign="center" position="relative" zIndex={1} top="50%" transform="translateY(-50%)" px={4}>
+          <Heading size="6xl" m={2}>FastBite</Heading>
+          <Text textStyle="3xl" m={2}>Your go-to spot for midnight cravings</Text>
+          <Button size="lg" bg="#ff6b35" _hover={{ bg: "#e55b25" }} m={4}>
+            <Link href="/menu" target="_self" position="relative">
+              <Text>Explore Our Menu</Text>
+            </Link>
+          </Button>
+      </Box>
+    </Box>
+  );
 };
 
 export default Home;
