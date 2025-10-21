@@ -4,9 +4,13 @@ import User from "./user.base.js";
 const { Schema } = mongoose;
 
 const EmployeeSchema = new Schema({
-  roleTitle: { type: String, enum: ["owner", "manager", "chef"], required: true },
-  hireDate:  { type: Date, default: Date.now },
-  isActive:  { type: Boolean, default: true },
+  roleTitle: {
+    type: String,
+    enum: ["owner", "manager", "chef"],
+    required: true,
+  },
+  hireDate: { type: Date, default: Date.now },
+  isActive: { type: Boolean, default: true },
 });
 
 const Employee = User.discriminator("employee", EmployeeSchema);

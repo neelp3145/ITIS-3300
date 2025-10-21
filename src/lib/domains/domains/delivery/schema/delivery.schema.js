@@ -35,7 +35,7 @@ const DeliverySchema = new Schema(
       trim: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Delivery =

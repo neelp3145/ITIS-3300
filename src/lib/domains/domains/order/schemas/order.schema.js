@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const orderItemSchema = new Schema({
   item: {
-    type: Schema.Types.ObjectId, 
+    type: Schema.Types.ObjectId,
     ref: "MenuItem",
     required: true,
   },
@@ -45,7 +45,7 @@ const orderSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 module.exports = mongoose.model("Order", orderSchema);
