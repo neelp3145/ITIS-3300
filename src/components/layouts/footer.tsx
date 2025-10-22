@@ -21,7 +21,7 @@ type FooterProps = {
   };
 };
 
-const Footer: React.FC<FooterProps> = ({
+const Footer = ({
   companyName = "FastBite",
   address = {
     line1: "9201 University City Blvd",
@@ -29,7 +29,7 @@ const Footer: React.FC<FooterProps> = ({
     phone: "(555) 123-4567",
     email: "hello@fastbite.com",
   },
-}) => {
+}: FooterProps) => {
   const year = new Date().getFullYear();
 
   const footerStyle = {

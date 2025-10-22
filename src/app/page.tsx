@@ -47,11 +47,16 @@ const Home: React.FC = () => {
         <Text textStyle="3xl" m={2}>
           Your go-to spot for midnight cravings
         </Text>
-        <Button css={buttonStyle}>
-          <Link href="/menu" target="_self" position="relative">
-            <Text>Explore Our Menu</Text>
-          </Link>
-        </Button>
+        <Link
+          href="/menu"
+          target="_self"
+          position="relative"
+          style={{ textDecoration: "none" }}
+        >
+          <Button css={buttonStyle}>
+            <Text color="white">Explore Our Menu</Text>
+          </Button>
+        </Link>
       </Box>
     </Box>
   );
