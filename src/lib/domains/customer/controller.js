@@ -1,7 +1,15 @@
 import { connectDB } from "../../database/connect.js";
 import Customer from "./schema/customer.schema.js";
 import User from "../user/schema/user.schema.js";
+import bcrypt from "bcryptjs";
 //import { signToken } from "../user/auth.js";
+function sanitizeUser(doc) {
+  if (!doc) return null;
+  const obj = doc.toObject ? doc.toObject() : doc;
+  delete obj.password;
+  delete obj.__v;
+  return obj;
+}
 
 /**
  * Validate customer signup payload
@@ -131,7 +139,7 @@ export async function signupCustomerController(bodyRaw) {
       password,
       phoneNumber,
       address,
-      orderHistory, // optional
+      orderHistory,
     });
 
     // Issue JWT (optional—uncomment if you want to return it)
@@ -154,6 +162,73 @@ export async function signupCustomerController(bodyRaw) {
       return { status: 409, body: { ok: false, msg: "Email already in use" } };
     }
     console.error("signupCustomerController error:", err);
+    return { status: 500, body: { ok: false, msg: "Server error" } };
+  }
+}
+
+/**
+ * Customer login
+ */
+function validateLoginData(body) {
+  const errors = [];
+  if (
+    !body.email ||
+    typeof body.email !== "string" ||
+    !/\S+@\S+\.\S+/.test(body.email)
+  ) {
+    errors.push({ path: "email", msg: "Valid email required" });
+  }
+  if (!body.password || typeof body.password !== "string") {
+    errors.push({ path: "password", msg: "Password is required" });
+  }
+  return errors;
+}
+export async function loginCustomerController(bodyRaw) {
+  await connectDB();
+
+  const body = {
+    ...bodyRaw,
+    email:
+      typeof bodyRaw.email === "string"
+        ? bodyRaw.email.toLowerCase().trim()
+        : bodyRaw.email,
+  };
+
+  const validationErrors = validateLoginData(body);
+  if (validationErrors.length > 0) {
+    return { status: 400, body: { ok: false, errors: validationErrors } };
+  }
+
+  const { email, password } = body;
+
+  try {
+    // Use the discriminator model to ensure we're logging in a Customer
+    const customer = await Customer.findOne({ email }).select("+password");
+    if (!customer) {
+      return { status: 404, body: { ok: false, msg: "User not found" } };
+    }
+
+    const isMatch = await bcrypt.compare(password, customer.password);
+    if (!isMatch) {
+      return { status: 401, body: { ok: false, msg: "Invalid credentials" } };
+    }
+
+    // const token = signToken({
+    //   sub: customer._id.toString(),
+    //   role: "customer",
+    // });
+
+    return {
+      status: 200,
+      body: {
+        ok: true,
+        msg: "Login successful",
+        data: sanitizeUser(customer),
+        //token,
+      },
+    };
+  } catch (err) {
+    console.error("loginCustomerController error:", err);
     return { status: 500, body: { ok: false, msg: "Server error" } };
   }
 }
