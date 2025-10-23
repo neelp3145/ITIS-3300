@@ -119,12 +119,12 @@ export async function signupEmployeeController(bodyRaw) {
       isActive,
     });
 
-    // Sign JWT
-    const token = signToken({
-      sub: newEmployee._id.toString(),
-      role: "employee",
-      roleTitle: newEmployee.roleTitle,
-    });
+    // // Sign JWT
+    // const token = signToken({
+    //   sub: newEmployee._id.toString(),
+    //   role: "employee",
+    //   roleTitle: newEmployee.roleTitle,
+    // });
 
     return {
       status: 201,
@@ -132,7 +132,6 @@ export async function signupEmployeeController(bodyRaw) {
         ok: true,
         msg: "Employee registered successfully",
         data: newEmployee.toJSON(),
-        token,
       },
     };
   } catch (err) {

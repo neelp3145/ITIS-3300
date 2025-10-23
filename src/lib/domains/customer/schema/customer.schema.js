@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
-import User from "./user.base.js";
+import User from "../../user/schema/user.schema.js";
 
 const { Schema } = mongoose;
 
 const AddressSchema = new Schema(
   {
     street: { type: String },
-    city:   { type: String },
-    state:  { type: String },
-    zip:    { type: String },
+    city: { type: String },
+    state: { type: String },
+    zip: { type: String },
   },
   { _id: false }
 );
