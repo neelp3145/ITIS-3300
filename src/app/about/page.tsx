@@ -53,8 +53,8 @@ const AboutUs: React.FC = () => {
             marginBottom: "15px"
           }}>
             FastBite was born from a simple idea: everyone deserves a great burger,
-            anytime they want one. Founded in 2020 by burger enthusiasts Sarah Chen
-            and Mike Rodriguez, we started as a small food truck with a big dream.
+            anytime they want one. Founded in 2020 by burger enthusiasts
+            we started as a small food truck with a big dream.
           </p>
           <p style={{
             fontSize: "16px",
@@ -273,20 +273,19 @@ const AboutUs: React.FC = () => {
         }}>
           <div>
             <h3 style={{ fontSize: "18px", marginBottom: "10px" }}>📍 Location</h3>
-            <p style={{ fontSize: "14px" }}>123 Burger Street<br />Foodville, FK 12345</p>
+            <p style={{ fontSize: "14px" }}>9201 University City Blvd Charlotte, NC 28223</p>
           </div>
           <div>
             <h3 style={{ fontSize: "18px", marginBottom: "10px" }}>🕒 Hours</h3>
             <p style={{ fontSize: "14px" }}>
-              Mon-Thu: 11AM - 10PM<br />
-              Fri-Sat: 11AM - 11PM<br />
-              Sunday: 12PM - 9PM
+              Mon-Fri: 11:00 AM — 4:00 AM <br />
+              Sat-Sun: 12:00 AM — 4:00 AM <br />
             </p>
           </div>
           <div>
             <h3 style={{ fontSize: "18px", marginBottom: "10px" }}>📞 Contact</h3>
             <p style={{ fontSize: "14px" }}>
-              (555) 123-BITE<br />
+              (555) 123-4567 <br />
               hello@fastbite.com
             </p>
           </div>
