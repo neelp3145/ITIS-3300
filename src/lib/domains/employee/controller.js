@@ -2,7 +2,7 @@ import { connectDB } from "../../database/connect.js";
 import Employee from "./schema/employee.schema.js";
 import User from "../user/schema/user.schema.js";
 import bcrypt from "bcryptjs";
-import { signToken } from "../user/auth.js";
+//import { signToken } from "../user/auth.js";
 
 function sanitizeUser(doc) {
   if (!doc) return null;
@@ -10,6 +10,16 @@ function sanitizeUser(doc) {
   delete obj.password;
   delete obj.__v;
   return obj;
+}
+function validateLoginData(body) {
+  const errors = [];
+  if (!body.email || typeof body.email !== "string" || !/\S+@\S+\.\S+/.test(body.email)) {
+    errors.push({ path: "email", msg: "Valid email required" });
+  }
+  if (!body.password || typeof body.password !== "string") {
+    errors.push({ path: "password", msg: "Password is required" });
+  }
+  return errors;
 }
 /**
  * Validate employee signup payload
