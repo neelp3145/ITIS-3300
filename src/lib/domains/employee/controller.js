@@ -13,7 +13,11 @@ function sanitizeUser(doc) {
 }
 function validateLoginData(body) {
   const errors = [];
-  if (!body.email || typeof body.email !== "string" || !/\S+@\S+\.\S+/.test(body.email)) {
+  if (
+    !body.email ||
+    typeof body.email !== "string" ||
+    !/\S+@\S+\.\S+/.test(body.email)
+  ) {
     errors.push({ path: "email", msg: "Valid email required" });
   }
   if (!body.password || typeof body.password !== "string") {
