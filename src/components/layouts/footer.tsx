@@ -94,8 +94,8 @@ const Footer = ({
           <Heading size="md">{companyName}</Heading>
           <Text {...companyInfoStyle}>
             Craving satisfaction at 2 AM? We&apos;ve got you covered. Gourmet
-            burgers, crispy fries, and cheesy pizza served hot until the early
-            hours. Your late-night hunger solution.
+            burgers and fries served hot until the early hours. Your late-night
+            hunger solution.
           </Text>
         </VStack>
 
