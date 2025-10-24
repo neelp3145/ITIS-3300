@@ -266,7 +266,7 @@ const Menu: React.FC = () => {
         <h1 style={{ color: "#ff6b35", fontSize: "48px", marginBottom: "10px" }}>
           Our Menu
         </h1>
-        <p style={{ fontSize: "20px", color: "#666" }}>
+        <p style={{ fontSize: "20px", color: "white" }}>
           Discover our delicious food selection with burgers, sides, drinks, and more!
         </p>
       </div>
@@ -303,12 +303,6 @@ const Menu: React.FC = () => {
               alignItems: "center",
               gap: "10px"
             }}>
-              <span>
-                {category === "Burgers" ? "🍔" :
-                 category === "Sides" ? "🍟" :
-                 category === "Drinks" ? "🥤" :
-                 category === "Sauces" ? "🧂" : "🍰"}
-              </span>
               {category} ({items.length} items)
             </h2>
             <span style={{
@@ -441,7 +435,7 @@ const Menu: React.FC = () => {
           color: "#ff6b35",
           textAlign: "center"
         }}>
-          🎉 Special Offers & Combos
+          Special Offers & Combos
         </h3>
         <div style={{
           fontSize: "18px",
