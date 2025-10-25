@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 
@@ -84,7 +82,7 @@ const AboutUs: React.FC = () => {
           color: "#888",
           border: "1px solid #e0e0e0"
         }}>
-          🍔 Our First Food Truck
+          Our First Food Truck
         </div>
       </div>
 
@@ -137,12 +135,6 @@ const AboutUs: React.FC = () => {
             textAlign: "center",
             padding: "20px"
           }}>
-            <div style={{
-              fontSize: "48px",
-              marginBottom: "15px"
-            }}>
-              🌱
-            </div>
             <h3 style={{
               color: "#FFFFFF",
               fontSize: "20px",
@@ -164,12 +156,6 @@ const AboutUs: React.FC = () => {
             textAlign: "center",
             padding: "20px"
           }}>
-            <div style={{
-              fontSize: "48px",
-              marginBottom: "15px"
-            }}>
-              ✨
-            </div>
             <h3 style={{
               color: "#FFFFFF",
               fontSize: "20px",
@@ -191,12 +177,6 @@ const AboutUs: React.FC = () => {
             textAlign: "center",
             padding: "20px"
           }}>
-            <div style={{
-              fontSize: "48px",
-              marginBottom: "15px"
-            }}>
-              🤝
-            </div>
             <h3 style={{
               color: "#FFFFFF",
               fontSize: "20px",
@@ -218,12 +198,6 @@ const AboutUs: React.FC = () => {
             textAlign: "center",
             padding: "20px"
           }}>
-            <div style={{
-              fontSize: "48px",
-              marginBottom: "15px"
-            }}>
-              😊
-            </div>
             <h3 style={{
               color: "#FFFFFF",
               fontSize: "20px",
@@ -237,56 +211,6 @@ const AboutUs: React.FC = () => {
             }}>
               Your satisfaction is our priority. We strive to create a welcoming
               atmosphere where every customer leaves with a smile.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Visit Us Section */}
-      <div style={{
-        backgroundColor: "#ff6b35",
-        color: "white",
-        padding: "40px",
-        borderRadius: "12px",
-        textAlign: "center"
-      }}>
-        <h2 style={{
-          fontSize: "36px",
-          marginBottom: "20px"
-        }}>
-          Visit Us Today!
-        </h2>
-        <p style={{
-          fontSize: "18px",
-          marginBottom: "25px",
-          maxWidth: "600px",
-          margin: "0 auto 25px"
-        }}>
-          Come experience the FastBite difference. We can't wait to serve you!
-        </p>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "20px",
-          maxWidth: "600px",
-          margin: "0 auto"
-        }}>
-          <div>
-            <h3 style={{ fontSize: "18px", marginBottom: "10px" }}>📍 Location</h3>
-            <p style={{ fontSize: "14px" }}>9201 University City Blvd Charlotte, NC 28223</p>
-          </div>
-          <div>
-            <h3 style={{ fontSize: "18px", marginBottom: "10px" }}>🕒 Hours</h3>
-            <p style={{ fontSize: "14px" }}>
-              Mon-Fri: 11:00 AM — 4:00 AM <br />
-              Sat-Sun: 12:00 AM — 4:00 AM <br />
-            </p>
-          </div>
-          <div>
-            <h3 style={{ fontSize: "18px", marginBottom: "10px" }}>📞 Contact</h3>
-            <p style={{ fontSize: "14px" }}>
-              (555) 123-4567 <br />
-              hello@fastbite.com
             </p>
           </div>
         </div>
