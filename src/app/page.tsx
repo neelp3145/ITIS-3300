@@ -49,12 +49,11 @@ const Home: React.FC = () => {
         </Text>
         <Link
           href="/menu"
-          target="_self"
-          position="relative"
           style={{ textDecoration: "none" }}
+          display={"inline-block"}
         >
-          <Button css={buttonStyle}>
-            <Text color="white">Explore Our Menu</Text>
+          <Button css={buttonStyle} color="white">
+            Explore Our Menu
           </Button>
         </Link>
       </Box>

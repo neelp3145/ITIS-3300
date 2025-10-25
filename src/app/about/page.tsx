@@ -37,7 +37,6 @@ const AboutUs: React.FC = () => {
     mb: 8,
   };
 
-
   return (
     <Box minH="100vh" py={10}>
       <Container maxW="6xl" lineHeight={1.6}>
@@ -91,7 +90,7 @@ const AboutUs: React.FC = () => {
             border="1px solid #e0e0e0"
             fontSize="lg"
           >
-            🍔 Our First Food Truck
+            Our First Food Truck
           </Center>
         </SimpleGrid>
 
@@ -112,7 +111,6 @@ const AboutUs: React.FC = () => {
           <Heading css={valuesHeadingStyle}>Our Values</Heading>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={6}>
             <VStack textAlign="center" p={5} gap={3}>
-              <Box fontSize="4xl">🌱</Box>
               <Heading color="white" fontSize="lg">
                 Quality Ingredients
               </Heading>
@@ -124,7 +122,6 @@ const AboutUs: React.FC = () => {
             </VStack>
 
             <VStack textAlign="center" p={5} gap={3}>
-              <Box fontSize="4xl">✨</Box>
               <Heading color="white" fontSize="lg">
                 Innovation
               </Heading>
@@ -136,7 +133,6 @@ const AboutUs: React.FC = () => {
             </VStack>
 
             <VStack textAlign="center" p={5} gap={3}>
-              <Box fontSize="4xl">🤝</Box>
               <Heading color="white" fontSize="lg">
                 Community
               </Heading>
@@ -148,7 +144,6 @@ const AboutUs: React.FC = () => {
             </VStack>
 
             <VStack textAlign="center" p={5} gap={3}>
-              <Box fontSize="4xl">😊</Box>
               <Heading color="white" fontSize="lg">
                 Customer Experience
               </Heading>
@@ -157,57 +152,6 @@ const AboutUs: React.FC = () => {
                 welcoming atmosphere where every customer leaves with a smile.
               </Text>
             </VStack>
-          </SimpleGrid>
-        </Box>
-
-        {/* Visit Us Section */}
-        <Box
-          bg="#ff6b35"
-          color="white"
-          p={10}
-          borderRadius="12px"
-          textAlign="center"
-        >
-          <Heading fontSize={{ base: "2xl", md: "3xl" }} mb={5}>
-            Visit Us Today!
-          </Heading>
-          <Text fontSize="lg" mb={6} maxW="600px" mx="auto">
-            Come experience the FastBite difference. We can't wait to serve you!
-          </Text>
-
-          <SimpleGrid
-            columns={{ base: 1, sm: 2, md: 3 }}
-            gap={5}
-            maxW="600px"
-            mx="auto"
-          >
-            <Box>
-              <Heading fontSize="md" mb={2}>
-                📍 Location
-              </Heading>
-              <Text fontSize="sm">
-                9201 University City Blvd Charlotte, NC 28223
-              </Text>
-            </Box>
-
-            <Box>
-              <Heading fontSize="md" mb={2}>
-                🕒 Hours
-              </Heading>
-              <Text fontSize="sm" whiteSpace="pre-line">
-                Mon-Fri: 11:00 AM — 4:00 AM{"\n"}
-                Sat-Sun: 12:00 AM — 4:00 AM
-              </Text>
-            </Box>
-
-            <Box>
-              <Heading fontSize="md" mb={2}>
-                📞 Contact
-              </Heading>
-              <Text fontSize="sm" whiteSpace="pre-line">
-                (555) 123-4567{"\n"}hello@fastbite.com
-              </Text>
-            </Box>
           </SimpleGrid>
         </Box>
       </Container>
