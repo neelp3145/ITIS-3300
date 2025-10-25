@@ -1,44 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const { MONGO_URI } = process.env;
+if (!MONGO_URI) throw new Error("Missing MONGO_URI in .env.local");
 
-const connection = {};
+let cached = global._fastbyte_mongoose;
+if (!cached) cached = global._fastbyte_mongoose = { conn: null, promise: null };
 
-async function connectDB() {
-  if (connection.isConnected) {
-    console.log('Using existing database connection');
-    return;
+export async function connectDB() {
+  if (cached.conn) return cached.conn;
+  if (!cached.promise) {
+    mongoose.set("strictQuery", true);
+    cached.promise = mongoose
+      .connect(MONGO_URI, { dbName: "fastbyte" })
+      .then((m) => m);
   }
-
-  if (mongoose.connections.length > 0) {
-    connection.isConnected = mongoose.connections[0].readyState;
-    if (connection.isConnected === 1) {
-      console.log('Using previous connection');
-      return;
-    }
-    await mongoose.disconnect();
-  }
-
-  const db = await mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-  console.log('New database connection established');
-  connection.isConnected = db.connections[0].readyState;
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
-
-async function disconnectDB() {
-  if (connection.isConnected) {
-    if (process.env.NODE_ENV === 'production') {
-      await mongoose.disconnect();
-      connection.isConnected = false;
-      console.log('Database disconnected');
-    } else {
-      console.log('Not disconnecting database in development');
-    }
-  }
-}
-
-const db = { connectDB, disconnectDB };
-export default db;

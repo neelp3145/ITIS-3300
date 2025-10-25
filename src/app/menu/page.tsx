@@ -304,26 +304,13 @@ const Menu: React.FC = () => {
               e.currentTarget.style.backgroundColor = "#ff6b35";
             }}
           >
-            <h2
-              style={{
-                fontSize: "24px",
-                margin: "0",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              <span>
-                {category === "Burgers"
-                  ? "🍔"
-                  : category === "Sides"
-                    ? "🍟"
-                    : category === "Drinks"
-                      ? "🥤"
-                      : category === "Sauces"
-                        ? "🧂"
-                        : "🍰"}
-              </span>
+            <h2 style={{
+              fontSize: "24px",
+              margin: "0",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px"
+            }}>
               {category} ({items.length} items)
             </h2>
             <span
@@ -463,24 +450,20 @@ const Menu: React.FC = () => {
       ))}
 
       {/* Special Offers */}
-      <div
-        style={{
-          backgroundColor: "#fffaf0",
-          padding: "30px",
-          borderRadius: "12px",
-          border: "2px solid #ff6b35",
-          marginTop: "40px",
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "28px",
-            margin: "0 0 20px 0",
-            color: "#ff6b35",
-            textAlign: "center",
-          }}
-        >
-          🎉 Special Offers & Combos
+      <div style={{
+        backgroundColor: "#fffaf0",
+        padding: "30px",
+        borderRadius: "12px",
+        border: "2px solid #ff6b35",
+        marginTop: "40px"
+      }}>
+        <h3 style={{
+          fontSize: "28px",
+          margin: "0 0 20px 0",
+          color: "#ff6b35",
+          textAlign: "center"
+        }}>
+          Special Offers & Combos
         </h3>
         <div
           style={{
