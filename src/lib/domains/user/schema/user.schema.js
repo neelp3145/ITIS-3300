@@ -7,13 +7,19 @@ const { Schema } = mongoose;
 const UserBaseSchema = new Schema(
   {
     firstName: { type: String, required: true, trim: true },
-    lastName:  { type: String, required: true, trim: true },
-    email:     { type: String, required: true, unique: true, lowercase: true, trim: true },
-    password:  { type: String, required: true, minlength: 6, select: false }, // hashed
+    lastName: { type: String, required: true, trim: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: { type: String, required: true, minlength: 6, select: false }, // hashed
   },
   {
     timestamps: true,
-    discriminatorKey: "role", 
+    discriminatorKey: "role",
     toJSON: {
       virtuals: true,
       transform: (_doc, ret) => {
