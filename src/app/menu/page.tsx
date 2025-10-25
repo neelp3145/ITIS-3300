@@ -8,22 +8,22 @@ import chickenBurger from "@/assets/images/chicken-burger.jpeg";
 import baconDeluxe from "@/assets/images/bacon-deluxe.jpeg";
 import goldenFries from "@/assets/images/golden-fries.jpeg";
 import onionRings from "@/assets/images/onion-rings.jpeg";
-import applePie from "@/assets/images/Apple Pie.jpeg";
-import bbqSauce from "@/assets/images/BBQ Sauce.jpeg";
-import chocolateBrownie from "@/assets/images/Chocolate Brownie.jpeg";
-import chocolateMilkshake from "@/assets/images/Chocolate Milkshake.jpeg";
-import garlicAioli from "@/assets/images/Garlic Aioli.jpeg";
-import honeyMustard from "@/assets/images/Honey Mustard.jpeg";
-import iceCreamSundae from "@/assets/images/Ice Cream Sundae.jpeg";
-import icedCoffee from "@/assets/images/Iced Coffee.jpeg";
-import mozzarellaSticks from "@/assets/images/Mozzarella Sticks.jpeg";
-import mushroomSwissBurger from "@/assets/images/Mushroom Swiss Burger.jpeg";
-import softDrinks from "@/assets/images/Soft Drinks.jpeg";
-import spicyMayo from "@/assets/images/Spicy Mayo.jpeg";
-import strawberrySmoothie from "@/assets/images/Strawberry Smoothie.jpeg";
-import sweetPotatoFries from "@/assets/images/Sweet Potato Fries.jpeg";
-import vanillaMilkshake from "@/assets/images/Vanilla Milkshake.jpeg";
-import veggieSupreme from "@/assets/images/Veggie Supreme.jpeg";
+import applePie from "@/assets/images/apple-pie.jpeg";
+import bbqSauce from "@/assets/images/bbq-sauce.jpeg";
+import chocolateBrownie from "@/assets/images/chocolate-brownie.jpeg";
+import chocolateMilkshake from "@/assets/images/chocolate-milkshake.jpeg";
+import garlicAioli from "@/assets/images/garlic-aioli.jpeg";
+import honeyMustard from "@/assets/images/honey-mustard.jpeg";
+import iceCreamSundae from "@/assets/images/ice-cream-sundae.jpeg";
+import icedCoffee from "@/assets/images/iced-coffee.jpeg";
+import mozzarellaSticks from "@/assets/images/mozzarella-sticks.jpeg";
+import mushroomSwissBurger from "@/assets/images/mushroom-swiss-burger.jpeg";
+import softDrinks from "@/assets/images/soft-drinks.jpeg";
+import spicyMayo from "@/assets/images/spicy-mayo.jpeg";
+import strawberrySmoothie from "@/assets/images/strawberry-smoothie.jpeg";
+import sweetPotatoFries from "@/assets/images/sweet-potato-fries.jpeg";
+import vanillaMilkshake from "@/assets/images/vanilla-milkshake.jpeg";
+import veggieSupreme from "@/assets/images/veggie-supreme.jpeg";
 
 const Menu: React.FC = () => {
   // State to track which categories are expanded

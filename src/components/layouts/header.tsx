@@ -4,6 +4,7 @@ import fastbiteLogo from "@/assets/images/fastbite-logo.png";
 import { Box, Flex, HStack, Link } from "@chakra-ui/react";
 import Cart from "@/components/ui/cart/cart";
 import LoginButton from "@/components/ui/loginButton/loginButton";
+import NextLink from "next/link";
 
 const Header = () => {
   const headerStyle = {
@@ -55,16 +56,16 @@ const Header = () => {
           {/* Navigation Links */}
           <nav>
             <HStack gap={6} align="center">
-              <Link href="/" css={linkStyle}>
+              <Link as={NextLink} href="/" css={linkStyle}>
                 Home
               </Link>
-              <Link href="/menu" css={linkStyle}>
+              <Link as={NextLink} href="/menu" css={linkStyle}>
                 Menu
               </Link>
-              <Link href="/contact" css={linkStyle}>
+              <Link as={NextLink} href="/contact" css={linkStyle}>
                 Contact
               </Link>
-              <Link href="/about" css={linkStyle}>
+              <Link as={NextLink} href="/about" css={linkStyle}>
                 About Us
               </Link>
             </HStack>
