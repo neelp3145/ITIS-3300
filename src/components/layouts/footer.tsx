@@ -10,6 +10,7 @@ import {
   List,
   ListItem,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 type FooterProps = {
   companyName?: string;
@@ -94,8 +95,8 @@ const Footer = ({
           <Heading size="md">{companyName}</Heading>
           <Text {...companyInfoStyle}>
             Craving satisfaction at 2 AM? We&apos;ve got you covered. Gourmet
-            burgers, crispy fries, and cheesy pizza served hot until the early
-            hours. Your late-night hunger solution.
+            burgers and fries served hot until the early hours. Your late-night
+            hunger solution.
           </Text>
         </VStack>
 
@@ -143,17 +144,17 @@ const Footer = ({
           <Heading size="sm">Explore</Heading>
           <List.Root gap={2} {...sectionStyle}>
             <ListItem>
-              <Link href="/menu" css={linkStyle}>
+              <Link as={NextLink} href="/menu" css={linkStyle}>
                 Menu
               </Link>
             </ListItem>
             <ListItem>
-              <Link href="/contact" css={linkStyle}>
+              <Link as={NextLink} href="/contact" css={linkStyle}>
                 Contact
               </Link>
             </ListItem>
             <ListItem>
-              <Link href="/about" css={linkStyle}>
+              <Link as={NextLink} href="/about" css={linkStyle}>
                 About Us
               </Link>
             </ListItem>
@@ -167,10 +168,10 @@ const Footer = ({
           &copy; {year} {companyName}. All rights reserved.
         </Text>
         <HStack justify="center" gap={4} mt={2}>
-          <Link href="/privacy" css={bottomLinkStyle}>
+          <Link as={NextLink} href="/privacy" css={bottomLinkStyle}>
             Privacy
           </Link>
-          <Link href="/terms" css={bottomLinkStyle}>
+          <Link as={NextLink} href="/terms" css={bottomLinkStyle}>
             Terms
           </Link>
         </HStack>
