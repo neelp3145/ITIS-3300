@@ -9,8 +9,17 @@ import {
   Center,
   VStack,
 } from "@chakra-ui/react";
+import Image from "next/image";
+import grillShot from "@/assets/images/grill-shot.jpg";
+
 
 const AboutUs: React.FC = () => {
+  const imageStyle = {
+    borderRadius: "12px",
+    maxWidth: "100%",
+    height: "auto",
+  };
+
   const missionStyle = {
     bg: "#fffaf0",
     p: 10,
@@ -21,7 +30,7 @@ const AboutUs: React.FC = () => {
   };
 
   const missionTextStyle = {
-    fontSize: "lg",
+    fontSize: "xl",
     color: "gray.600",
     fontStyle: "italic",
     maxW: "800px",
@@ -63,7 +72,8 @@ const AboutUs: React.FC = () => {
               <Text fontSize="md" color="white">
                 FastBite was born from a simple idea: everyone deserves a great
                 burger, anytime they want one. Founded in 2020 by burger
-                enthusiasts we started as a small food truck with a big dream.
+                enthusiasts we started from the backyard grill, serving friends
+                and family late into the night.
               </Text>
               <Text fontSize="md" color="white">
                 What began as late-night cravings turned into a passion for
@@ -80,15 +90,8 @@ const AboutUs: React.FC = () => {
             </Stack>
           </Box>
 
-          <Center
-            bg="#f5f5f5"
-            h="300px"
-            borderRadius="12px"
-            color="#888"
-            border="1px solid #e0e0e0"
-            fontSize="lg"
-          >
-            Our First Food Truck
+          <Center>
+            <Image src={grillShot} alt="Our Starting Grill" style={imageStyle} />
           </Center>
         </SimpleGrid>
 
@@ -98,9 +101,7 @@ const AboutUs: React.FC = () => {
             Our Mission
           </Heading>
           <Text css={missionTextStyle}>
-            "To create unforgettable burger experiences by combining quality
-            ingredients, innovative flavors, and exceptional service, making
-            every customer feel like they've found their new favorite spot."
+            "Crafting quality food with passion, delivering smiles with every bite."
           </Text>
         </Box>
 
