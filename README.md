@@ -13,7 +13,12 @@ ITIS-3300
 ├── note-deliverable-1.txt
 ├── note-deliverable-2.txt
 ├── src
-│   └── placeholder.txt
+│   └── app
+│   └── assets
+│   └── components
+│   └── features
+│   └── lib
+│   └── hook
 ├── project-reports
 │   └── Lab Rats – Deliverable 1 Report.docx
 │   └── Lab Rats - Deliverable 2 SRS.docx
