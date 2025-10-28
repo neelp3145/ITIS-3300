@@ -1,7 +1,7 @@
-// src/lib/domains/cart/controller.js
+
 import { connectDB } from "../../database/connect.js";
 import Cart from "./schema/cart.schema.js";
-import MenuItem from "../menuItem/schema/menuItem.schema.js"; // adjust path
+import MenuItem from "../menuItem/schema/menuItem.schema.js";
 import mongoose from "mongoose";
 
 async function validateCartLines(clientLines) {
@@ -74,12 +74,10 @@ export async function putCartController(
 ) {
   await connectDB();
 
-  // Validate and compute authoritative totals
   const { ok, items, restaurantId, totalPrice } =
     await validateCartLines(clientItems);
   if (!ok) return { ok: false, status: 400, msg: "Invalid cart" };
 
-  // Find or create the user's cart
   let cart = await Cart.findOne({ customer: customerId });
   if (!cart) {
     cart = new Cart({
@@ -155,7 +153,7 @@ export async function clearCartController(customerId) {
     };
   cart.items = [];
   cart.totalPrice = 0;
-  cart.restaurant = cart.restaurant ?? null; // keep or null out—your choice
+  cart.restaurant = cart.restaurant ?? null;
   cart.updatedAt = new Date();
   await cart.save();
   return {

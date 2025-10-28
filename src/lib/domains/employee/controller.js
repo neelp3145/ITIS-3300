@@ -25,13 +25,8 @@ function validateLoginData(body) {
   }
   return errors;
 }
-/**
- * Validate employee signup payload
- */
 function validateEmployeeData(body) {
   const errors = [];
-
-  // Required string fields
   if (
     !body.firstName ||
     typeof body.firstName !== "string" ||
@@ -48,7 +43,6 @@ function validateEmployeeData(body) {
     errors.push({ path: "lastName", msg: "lastName is required" });
   }
 
-  // Email
   if (
     !body.email ||
     typeof body.email !== "string" ||
@@ -57,7 +51,6 @@ function validateEmployeeData(body) {
     errors.push({ path: "email", msg: "Valid email required" });
   }
 
-  // Password
   if (
     !body.password ||
     typeof body.password !== "string" ||
@@ -68,18 +61,14 @@ function validateEmployeeData(body) {
       msg: "Password must be at least 6 characters",
     });
   }
-
-  // RoleTitle (enum)
   const allowedRoles = ["owner", "manager", "chef"];
   if (!body.roleTitle || !allowedRoles.includes(body.roleTitle)) {
     errors.push({
       path: "roleTitle",
-      // eslint-disable-next-line quotes
       msg: 'roleTitle must be one of: "owner", "manager", "chef"',
     });
   }
 
-  // Optional fields
   if (body.isActive !== undefined && typeof body.isActive !== "boolean") {
     errors.push({ path: "isActive", msg: "isActive must be a boolean" });
   }
@@ -94,9 +83,6 @@ function validateEmployeeData(body) {
   return errors;
 }
 
-/**
- * Employee sign-up logic
- */
 export async function signupEmployeeController(bodyRaw) {
   await connectDB();
 
@@ -123,14 +109,12 @@ export async function signupEmployeeController(bodyRaw) {
     isActive,
   } = body;
 
-  // Check for existing user (unique email)
   const existing = await User.findOne({ email }).lean();
   if (existing) {
     return { status: 409, body: { ok: false, msg: "Email already in use" } };
   }
 
   try {
-    // pre-save hook in User schema handles password hashing
     const newEmployee = await Employee.create({
       firstName,
       lastName,
@@ -164,9 +148,6 @@ export async function signupEmployeeController(bodyRaw) {
     return { status: 500, body: { ok: false, msg: "Server error" } };
   }
 }
-/**
- * Employee login
- */
 export async function loginEmployeeController(bodyRaw) {
   await connectDB();
 
@@ -186,7 +167,6 @@ export async function loginEmployeeController(bodyRaw) {
   const { email, password } = body;
 
   try {
-    // Use discriminator and explicitly include password for compare
     const employee = await Employee.findOne({ email }).select("+password");
     if (!employee) {
       return { status: 404, body: { ok: false, msg: "User not found" } };
@@ -204,12 +184,11 @@ export async function loginEmployeeController(bodyRaw) {
       return { status: 401, body: { ok: false, msg: "Invalid credentials" } };
     }
 
-    const token = signToken({
-      sub: employee._id.toString(),
-      role: "employee",
-      // you can include roleTitle if you want it in the token:
-      // roleTitle: employee.roleTitle
-    });
+    // const token = signToken({
+    //   sub: employee._id.toString(),
+    //   role: "employee",
+    //   // roleTitle: employee.roleTitle
+    // });
 
     return {
       status: 200,

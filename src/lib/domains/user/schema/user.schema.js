@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 
 const { Schema } = mongoose;
 
-// Base schema for all users
 const UserBaseSchema = new Schema(
   {
     firstName: { type: String, required: true, trim: true },

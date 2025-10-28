@@ -6,7 +6,7 @@ const menuItemSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    unique: true, // Prevents duplicates at database level
+    unique: true,
   },
   description: {
     type: String,
@@ -34,7 +34,6 @@ const menuItemSchema = new Schema({
   timestamps: true
 });
 
-// Add compound unique index for name + category (optional)
 menuItemSchema.index({ name: 1, category: 1 }, { unique: true });
 
 export default mongoose.models.MenuItem || mongoose.model("MenuItem", menuItemSchema);

@@ -11,13 +11,8 @@ function sanitizeUser(doc) {
   return obj;
 }
 
-/**
- * Validate customer signup payload
- */
 function validateCustomerData(body) {
   const errors = [];
-
-  // Required string fields
   if (
     !body.firstName ||
     typeof body.firstName !== "string" ||
@@ -34,7 +29,6 @@ function validateCustomerData(body) {
     errors.push({ path: "lastName", msg: "lastName is required" });
   }
 
-  // Email
   if (
     !body.email ||
     typeof body.email !== "string" ||
@@ -43,7 +37,7 @@ function validateCustomerData(body) {
     errors.push({ path: "email", msg: "Valid email required" });
   }
 
-  // Password
+ 
   if (
     !body.password ||
     typeof body.password !== "string" ||
@@ -55,7 +49,7 @@ function validateCustomerData(body) {
     });
   }
 
-  // Phone number
+ 
   if (
     !body.phoneNumber ||
     typeof body.phoneNumber !== "string" ||
@@ -64,7 +58,7 @@ function validateCustomerData(body) {
     errors.push({ path: "phoneNumber", msg: "phoneNumber is required" });
   }
 
-  // Address (nested)
+
   const addr = body.address;
   if (!addr || typeof addr !== "object") {
     errors.push({ path: "address", msg: "address is required" });
@@ -87,7 +81,6 @@ function validateCustomerData(body) {
     }
   }
 
-  // Optional: orderHistory must be an array of ObjectIds if provided
   if (body.orderHistory !== undefined && !Array.isArray(body.orderHistory)) {
     errors.push({ path: "orderHistory", msg: "orderHistory must be an array" });
   }
@@ -95,9 +88,6 @@ function validateCustomerData(body) {
   return errors;
 }
 
-/**
- * Customer sign-up logic
- */
 export async function signupCustomerController(bodyRaw) {
   await connectDB();
 
@@ -124,14 +114,13 @@ export async function signupCustomerController(bodyRaw) {
     orderHistory,
   } = body;
 
-  // Unique email
+
   const existing = await User.findOne({ email }).lean();
   if (existing) {
     return { status: 409, body: { ok: false, msg: "Email already in use" } };
   }
 
   try {
-    // pre-save hook in base User handles password hashing
     const newCustomer = await Customer.create({
       firstName,
       lastName,
@@ -166,9 +155,6 @@ export async function signupCustomerController(bodyRaw) {
   }
 }
 
-/**
- * Customer login
- */
 function validateLoginData(body) {
   const errors = [];
   if (
@@ -202,7 +188,6 @@ export async function loginCustomerController(bodyRaw) {
   const { email, password } = body;
 
   try {
-    // Use the discriminator model to ensure we're logging in a Customer
     const customer = await Customer.findOne({ email }).select("+password");
     if (!customer) {
       return { status: 404, body: { ok: false, msg: "User not found" } };
@@ -213,10 +198,7 @@ export async function loginCustomerController(bodyRaw) {
       return { status: 401, body: { ok: false, msg: "Invalid credentials" } };
     }
 
-    // const token = signToken({
-    //   sub: customer._id.toString(),
-    //   role: "customer",
-    // });
+
 
     return {
       status: 200,

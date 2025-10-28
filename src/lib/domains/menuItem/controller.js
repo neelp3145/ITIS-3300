@@ -42,7 +42,6 @@ export async function createMenuItemController(body) {
   console.log("=== CREATE MENU ITEM REQUEST ===");
   console.log("Payload:", payload);
 
-  // Validation 1: Required fields
   if (!payload.name || payload.name.trim() === "") {
     console.log("VALIDATION FAILED: Name is required");
     return { status: 400, body: { ok: false, msg: "name is required" } };
@@ -52,18 +51,15 @@ export async function createMenuItemController(body) {
     return { status: 400, body: { ok: false, msg: "price is required" } };
   }
 
-  // Validation 2: Trim and normalize the name
   payload.name = payload.name.trim();
   const searchName = payload.name.toLowerCase();
   console.log("Searching for duplicate with name:", searchName);
 
-  // Validation 3: Check for duplicates (case-insensitive)
   console.log("Fetching all existing items...");
   const existingItems = await MenuItem.find({});
   console.log("Total existing items:", existingItems.length);
   console.log("Existing item names:", existingItems.map(item => item.name));
 
-  // More direct duplicate check
   const existingItem = await MenuItem.findOne({
     name: { $regex: new RegExp(`^${payload.name}$`, 'i') }
   });
@@ -84,13 +80,10 @@ export async function createMenuItemController(body) {
 
   console.log("No duplicate found, creating new item...");
 
-  // Validation 4: Price must be positive
   if (payload.price < 0) {
     console.log("VALIDATION FAILED: Price must be positive");
     return { status: 400, body: { ok: false, msg: "price must be positive" } };
   }
-
-  // Create the item
   const created = await MenuItem.create(payload);
   console.log("ITEM CREATED SUCCESSFULLY:", created.name);
   return { status: 201, body: { ok: true, data: created } };
