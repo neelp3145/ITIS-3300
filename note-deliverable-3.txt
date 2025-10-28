@@ -1,0 +1,6 @@
+Note-deliverable-3
+=======================
+Report: /Team Deliverable-3 Lab Rats.docx
+Core functionalities: /inspection-code-lab-rats.docx
+Code: See GitHub project repo (source folder 'phase-1' or equivalent).
+Meeting minutes: Update in GitHub wiki/notes.
