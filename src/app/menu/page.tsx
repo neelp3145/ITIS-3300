@@ -1,5 +1,5 @@
 "use client";
-
+import { Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Image from "next/image";
 
@@ -266,7 +266,7 @@ const Menu: React.FC = () => {
         minHeight: "100vh",
       }}
     >
-      {/* Header */}
+      {/* Page Header */}
       <div style={{ textAlign: "center", marginBottom: "40px" }}>
         <h1
           style={{ color: "#ff6b35", fontSize: "48px", marginBottom: "10px" }}
@@ -339,112 +339,123 @@ const Menu: React.FC = () => {
               }}
             >
               {items.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "20px",
-                    borderRadius: "12px",
-                    backgroundColor: "white",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-5px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 8px 25px rgba(0,0,0,0.15)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow =
-                      "0 2px 8px rgba(0,0,0,0.1)";
-                  }}
-                >
-                  {/* Name and Price Section */}
+                <React.Fragment key={item.id}>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      marginBottom: "15px",
+                      border: "1px solid #ddd",
+                      padding: "20px",
+                      borderRadius: "12px",
+                      backgroundColor: "white",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                      transition: "all 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-5px)";
+                      e.currentTarget.style.boxShadow =
+                        "0 8px 25px rgba(0,0,0,0.15)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow =
+                        "0 2px 8px rgba(0,0,0,0.1)";
                     }}
                   >
-                    <div>
-                      <h3
-                        style={{
-                          fontSize: "20px",
-                          margin: "0 0 8px 0",
-                          color: "#333",
-                        }}
-                      >
-                        {item.name}
-                      </h3>
-                      {item.isPopular && (
-                        <span
-                          style={{
-                            backgroundColor: "#ff6b35",
-                            color: "white",
-                            padding: "3px 10px",
-                            borderRadius: "20px",
-                            fontSize: "12px",
-                            fontWeight: "bold",
-                            display: "inline-block",
-                          }}
-                        >
-                          Popular
-                        </span>
-                      )}
-                    </div>
-                    <span
+                    {/* Name and Price Section */}
+                    <div
                       style={{
-                        fontSize: "18px",
-                        fontWeight: "bold",
-                        color: "#ff6b35",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        marginBottom: "15px",
                       }}
                     >
-                      {item.price}
-                    </span>
-                  </div>
+                      <div>
+                        <h3
+                          style={{
+                            fontSize: "20px",
+                            margin: "0 0 8px 0",
+                            color: "#333",
+                          }}
+                        >
+                          {item.name}
+                        </h3>
+                        {item.isPopular && (
+                          <span
+                            style={{
+                              backgroundColor: "#ff6b35",
+                              color: "white",
+                              padding: "3px 10px",
+                              borderRadius: "20px",
+                              fontSize: "12px",
+                              fontWeight: "bold",
+                              display: "inline-block",
+                            }}
+                          >
+                            Popular
+                          </span>
+                        )}
+                      </div>
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "bold",
+                          color: "#ff6b35",
+                        }}
+                      >
+                        {item.price}
+                      </span>
+                    </div>
 
-                  {/* Image Section */}
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "200px",
-                      backgroundColor: "#f5f5f5",
-                      borderRadius: "8px",
-                      marginBottom: "15px",
-                      border: "1px solid #e0e0e0",
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
+                    {/* Image Section */}
+                    <div
                       style={{
-                        objectFit: "contain",
-                        objectPosition: "center",
-                        padding: "10px",
+                        width: "100%",
+                        height: "200px",
+                        backgroundColor: "#f5f5f5",
+                        borderRadius: "8px",
+                        marginBottom: "15px",
+                        border: "1px solid #e0e0e0",
+                        position: "relative",
+                        overflow: "hidden",
                       }}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority={item.isPopular}
-                    />
-                  </div>
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        style={{
+                          objectFit: "contain",
+                          objectPosition: "center",
+                          padding: "10px",
+                        }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority={item.isPopular}
+                      />
+                    </div>
 
-                  {/* Description Section */}
-                  <p
-                    style={{
-                      color: "#666",
-                      margin: "0",
-                      fontSize: "14px",
-                      lineHeight: "1.5",
-                    }}
-                  >
-                    {item.description}
-                  </p>
-                </div>
+                    {/* Description Section */}
+                    <p
+                      style={{
+                        color: "#666",
+                        margin: "0",
+                        fontSize: "14px",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      {item.description}
+                    </p>
+                    <Button
+                      color="white"
+                      bgColor={"orange.500"}
+                      size="md"
+                      width="100%"
+                      mt={4}
+                      aria-label={`Add ${item.name} to cart`}
+                    >
+                      Add to Cart
+                    </Button>
+                  </div>
+                </React.Fragment>
               ))}
             </div>
           )}
@@ -499,8 +510,8 @@ const Menu: React.FC = () => {
               borderLeft: "4px solid #ff6b35",
             }}
           >
-            <strong>Family Pack:</strong> 4 classic burgers + 2 large fries + 4 drinks
-            for <strong>$32.99</strong>
+            <strong>Family Pack:</strong> 4 classic burgers + 2 large fries + 4
+            drinks for <strong>$32.99</strong>
           </div>
           <div
             style={{

@@ -12,7 +12,6 @@ import {
 import Image from "next/image";
 import grillShot from "@/assets/images/grill-shot.jpg";
 
-
 const AboutUs: React.FC = () => {
   const imageStyle = {
     borderRadius: "12px",
@@ -91,7 +90,11 @@ const AboutUs: React.FC = () => {
           </Box>
 
           <Center>
-            <Image src={grillShot} alt="Our Starting Grill" style={imageStyle} />
+            <Image
+              src={grillShot}
+              alt="Our Starting Grill"
+              style={imageStyle}
+            />
           </Center>
         </SimpleGrid>
 
@@ -101,7 +104,8 @@ const AboutUs: React.FC = () => {
             Our Mission
           </Heading>
           <Text css={missionTextStyle}>
-            "Crafting quality food with passion, delivering smiles with every bite."
+            "Crafting quality food with passion, delivering smiles with every
+            bite."
           </Text>
         </Box>
 

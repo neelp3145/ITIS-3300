@@ -3,6 +3,7 @@
 import { Provider } from "@/components/ui/provider";
 import Header from "@/components/layouts/header";
 import Footer from "@/components/layouts/footer";
+import { CartProvider } from "@/features/orders/CartProvider";
 import { ReactNode } from "react";
 
 export default function RootLayout(props: { children: ReactNode }) {
@@ -10,11 +11,13 @@ export default function RootLayout(props: { children: ReactNode }) {
   return (
     <html suppressHydrationWarning>
       <body>
-        <Provider>
-          <Header />
-          {children}
-          <Footer />
-        </Provider>
+        <CartProvider>
+          <Provider>
+            <Header />
+            {children}
+            <Footer />
+          </Provider>
+        </CartProvider>
       </body>
     </html>
   );

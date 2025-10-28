@@ -5,21 +5,31 @@ import { useState } from "react";
 import { CiShoppingCart } from "react-icons/ci";
 import CartDialog from "@/components/ui/cart/cartDialog";
 
-const Cart = () => {
+type CartProps = {
+  CartItems?: any[];
+};
+
+const Cart = ({ CartItems = [] }: CartProps) => {
   const [DialogVisible, setDialogVisible] = useState(false);
   const handleToggleDialog = () => setDialogVisible(!DialogVisible);
 
   return (
     <Box>
-      <Button mx={2} aria-label="view-cart" onClick={handleToggleDialog} bg="orange.500" _hover={{ bg: "orange.600" }}>
+      <Button
+        mx={2}
+        aria-label="view-cart"
+        onClick={handleToggleDialog}
+        bg="orange.500"
+        _hover={{ bg: "orange.600" }}
+      >
         <Icon>
           <CiShoppingCart size="1.5em" />
         </Icon>
       </Button>
       <CartDialog
-        cartItems={[]}
         visible={DialogVisible}
         onClose={handleToggleDialog}
+        CartItems={CartItems}
       />
     </Box>
   );

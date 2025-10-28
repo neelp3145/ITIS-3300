@@ -1,12 +1,12 @@
 import { Box, Text, Dialog, Portal, Button, Link } from "@chakra-ui/react";
 
 type CartDialogProps = {
-  cartItems: any[];
   visible: boolean;
   onClose: () => void;
+  CartItems?: any[];
 };
 
-const CartDialog = ({ cartItems, visible, onClose }: CartDialogProps) => {
+const CartDialog = ({ visible, onClose, CartItems }: CartDialogProps) => {
   const dialogStyles = {
     maxW: "600px",
     width: "100%",
@@ -40,8 +40,18 @@ const CartDialog = ({ cartItems, visible, onClose }: CartDialogProps) => {
                     X
                   </Button>
                 </Dialog.Header>
-                <Dialog.Body>
-                  {cartItems.length == 0 ? (
+                {CartItems && CartItems.length > 0 ? (
+                  <Dialog.Body>
+                    <Box>
+                      {CartItems.map((item, index) => (
+                        <Box key={index} mb={2}>
+                          <Text>{item.name}</Text>
+                        </Box>
+                      ))}
+                    </Box>
+                  </Dialog.Body>
+                ) : (
+                  <Dialog.Body>
                     <Box textAlign="center" py={4} px={4}>
                       <Text textStyle="lg" mb={4}>
                         Looks like your cart is empty.
@@ -54,10 +64,8 @@ const CartDialog = ({ cartItems, visible, onClose }: CartDialogProps) => {
                         <Button>Start Your Order</Button>
                       </Link>
                     </Box>
-                  ) : (
-                    <Box>{/* Cart items would go here */}</Box>
-                  )}
-                </Dialog.Body>
+                  </Dialog.Body>
+                )}
               </Dialog.Content>
             </Dialog.Positioner>
           </Dialog.Backdrop>
