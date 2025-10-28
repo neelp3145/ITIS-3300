@@ -14,9 +14,10 @@ import {
 const Contact = () => {
   const buttonStyle = {
     size: "md",
-    bg: "#ff6b35",
+    bg: "orange.500",
     m: 2,
-    _hover: { bg: "#e55b25" },
+    _hover: { bg: "orange.600" },
+    color: "white",
   };
 
   const mainStyle = {
