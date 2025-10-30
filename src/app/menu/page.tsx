@@ -1,414 +1,310 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, useEffect } from "react";
 
-import classicCheeseburger from "@/assets/images/classic-cheeseburger.jpg";
-import chickenBurger from "@/assets/images/chicken-burger.jpeg";
-import baconDeluxe from "@/assets/images/bacon-deluxe.jpeg";
-import goldenFries from "@/assets/images/golden-fries.jpeg";
-import onionRings from "@/assets/images/onion-rings.jpeg";
-import applePie from "@/assets/images/apple-pie.jpeg";
-import bbqSauce from "@/assets/images/bbq-sauce.jpeg";
-import chocolateBrownie from "@/assets/images/chocolate-brownie.jpeg";
-import chocolateMilkshake from "@/assets/images/chocolate-milkshake.jpeg";
-import garlicAioli from "@/assets/images/garlic-aioli.jpeg";
-import honeyMustard from "@/assets/images/honey-mustard.jpeg";
-import iceCreamSundae from "@/assets/images/ice-cream-sundae.jpeg";
-import icedCoffee from "@/assets/images/iced-coffee.jpeg";
-import mozzarellaSticks from "@/assets/images/mozzarella-sticks.jpeg";
-import mushroomSwissBurger from "@/assets/images/mushroom-swiss-burger.jpeg";
-import softDrinks from "@/assets/images/soft-drinks.jpeg";
-import spicyMayo from "@/assets/images/spicy-mayo.jpeg";
-import strawberrySmoothie from "@/assets/images/strawberry-smoothie.jpeg";
-import sweetPotatoFries from "@/assets/images/sweet-potato-fries.jpeg";
-import vanillaMilkshake from "@/assets/images/vanilla-milkshake.jpeg";
-import veggieSupreme from "@/assets/images/veggie-supreme.jpeg";
+interface MenuItem {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  available: boolean;
+  imageUrl: string;
+}
 
 const Menu: React.FC = () => {
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   // State to track which categories are expanded
-  const [expandedCategories, setExpandedCategories] = useState<
-    Record<string, boolean>
-  >({
-    Burgers: true,
-    Sides: false,
-    Drinks: false,
-    Sauces: false,
-    Desserts: false,
-  });
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+
+  // Fetch menu items from API
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        setLoading(true);
+        console.log('Fetching menu items from API...');
+
+        const response = await fetch('/api/menuItem');
+        console.log('API Response status:', response.status);
+
+        const result = await response.json();
+        console.log('API Response data:', result);
+
+        if (result.ok && result.data) {
+          setMenuItems(result.data);
+          console.log(`Loaded ${result.data.length} menu items`);
+
+          // Initialize expanded state for categories that have items
+          const categoriesWithItems = [...new Set(result.data.map((item: MenuItem) => item.category))];
+          const initialExpandedState: Record<string, boolean> = {};
+          categoriesWithItems.forEach(category => {
+            initialExpandedState[category] = true; // Expand all categories by default
+          });
+          setExpandedCategories(initialExpandedState);
+        } else {
+          setError(result.message || 'Failed to load menu items');
+        }
+      } catch (err) {
+        console.error('Error fetching menu items:', err);
+        setError('Error connecting to server. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
 
   // Toggle category expansion
   const toggleCategory = (category: string) => {
-    setExpandedCategories((prev) => ({
+    setExpandedCategories(prev => ({
       ...prev,
-      [category]: !prev[category],
+      [category]: !prev[category]
     }));
   };
 
-  // Expanded menu data with more categories and items
-  const menuItems = [
-    // Burgers
-    {
-      id: 1,
-      name: "Classic Cheeseburger",
-      description:
-        "Juicy beef patty with melted cheese, fresh lettuce, and special sauce",
-      price: "$7.99",
-      category: "Burgers",
-      image: classicCheeseburger,
-      isPopular: true,
-    },
-    {
-      id: 2,
-      name: "Crispy Chicken Burger",
-      description: "Crispy fried chicken with mayo and coleslaw in a soft bun",
-      price: "$9.99",
-      category: "Burgers",
-      image: chickenBurger,
-      isPopular: false,
-    },
-    {
-      id: 3,
-      name: "Bacon Deluxe",
-      description: "Double beef patty with crispy bacon and BBQ sauce",
-      price: "$10.99",
-      category: "Burgers",
-      image: baconDeluxe,
-      isPopular: true,
-    },
-    {
-      id: 4,
-      name: "Mushroom Swiss Burger",
-      description: "Beef patty with sautéed mushrooms and melted Swiss cheese",
-      price: "$10.99",
-      category: "Burgers",
-      image: mushroomSwissBurger,
-      isPopular: false,
-    },
-    {
-      id: 5,
-      name: "Veggie Supreme",
-      description: "Plant-based patty with avocado and fresh vegetables",
-      price: "$12.99",
-      category: "Burgers",
-      image: veggieSupreme,
-      isPopular: false,
-    },
+  // Add to cart function
+  const addToCart = (item: MenuItem) => {
+    console.log('Adding to cart:', item);
 
-    // Sides
-    {
-      id: 6,
-      name: "Golden Fries",
-      description: "Crispy golden fries with sea salt",
-      price: "$2.99",
-      category: "Sides",
-      image: goldenFries,
-      isPopular: false,
-    },
-    {
-      id: 7,
-      name: "Onion Rings",
-      description: "Beer-battered onion rings with dipping sauce",
-      price: "$3.99",
-      category: "Sides",
-      image: onionRings,
-      isPopular: true,
-    },
-    {
-      id: 8,
-      name: "Sweet Potato Fries",
-      description: "Crispy sweet potato fries with cinnamon sugar",
-      price: "$3.49",
-      category: "Sides",
-      image: sweetPotatoFries,
-      isPopular: false,
-    },
-    {
-      id: 9,
-      name: "Mozzarella Sticks",
-      description: "Breaded mozzarella sticks with marinara sauce",
-      price: "$4.99",
-      category: "Sides",
-      image: mozzarellaSticks,
-      isPopular: true,
-    },
+    const cartItem = {
+      id: item._id,
+      name: item.name,
+      price: item.price,
+      quantity: 1,
+      imageUrl: item.imageUrl
+    };
 
-    // Drinks
-    {
-      id: 10,
-      name: "Chocolate Milkshake",
-      description: "Creamy chocolate milkshake with whipped cream",
-      price: "$5.99",
-      category: "Drinks",
-      image: chocolateMilkshake,
-      isPopular: true,
-    },
-    {
-      id: 11,
-      name: "Vanilla Milkshake",
-      description: "Classic vanilla milkshake with cherry on top",
-      price: "$5.99",
-      category: "Drinks",
-      image: vanillaMilkshake,
-      isPopular: false,
-    },
-    {
-      id: 12,
-      name: "Strawberry Smoothie",
-      description: "Fresh strawberry smoothie with yogurt",
-      price: "$5.99",
-      category: "Drinks",
-      image: strawberrySmoothie,
-      isPopular: false,
-    },
-    {
-      id: 13,
-      name: "Soft Drinks",
-      description: "Coke, Sprite, Fanta, or Dr. Pepper",
-      price: "$2.99",
-      category: "Drinks",
-      image: softDrinks,
-      isPopular: false,
-    },
-    {
-      id: 14,
-      name: "Iced Coffee",
-      description: "Chilled coffee with cream and sugar",
-      price: "$3.99",
-      category: "Drinks",
-      image: icedCoffee,
-      isPopular: false,
-    },
+    // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem('fastbite-cart') || '[]');
 
-    // Sauces
-    {
-      id: 15,
-      name: "BBQ Sauce",
-      description: "Sweet and smoky barbecue sauce",
-      price: "$0.99",
-      category: "Sauces",
-      image: bbqSauce,
-      isPopular: false,
-    },
-    {
-      id: 16,
-      name: "Garlic Aioli",
-      description: "Creamy garlic mayonnaise dip",
-      price: "$0.99",
-      category: "Sauces",
-      image: garlicAioli,
-      isPopular: true,
-    },
-    {
-      id: 17,
-      name: "Spicy Mayo",
-      description: "Mayonnaise with a kick of heat",
-      price: "$0.99",
-      category: "Sauces",
-      image: spicyMayo,
-      isPopular: false,
-    },
-    {
-      id: 18,
-      name: "Honey Mustard",
-      description: "Sweet and tangy honey mustard",
-      price: "$0.99",
-      category: "Sauces",
-      image: honeyMustard,
-      isPopular: false,
-    },
+    // Check if item already exists in cart
+    const existingItemIndex = existingCart.findIndex((cartItem: any) => cartItem.id === item._id);
 
-    // Desserts
-    {
-      id: 19,
-      name: "Chocolate Brownie",
-      description: "Warm chocolate brownie with ice cream",
-      price: "$5.99",
-      category: "Desserts",
-      image: chocolateBrownie,
-      isPopular: true,
-    },
-    {
-      id: 20,
-      name: "Apple Pie",
-      description: "Classic apple pie with cinnamon",
-      price: "$7.99",
-      category: "Desserts",
-      image: applePie,
-      isPopular: false,
-    },
-    {
-      id: 21,
-      name: "Ice Cream Sundae",
-      description: "Vanilla ice cream with chocolate sauce and nuts",
-      price: "$5.99",
-      category: "Desserts",
-      image: iceCreamSundae,
-      isPopular: false,
-    },
-  ];
+    if (existingItemIndex > -1) {
+      // Update quantity if item exists
+      existingCart[existingItemIndex].quantity += 1;
+    } else {
+      // Add new item to cart
+      existingCart.push(cartItem);
+    }
 
-  // Group items by category
-  const categories = {
-    Burgers: menuItems.filter((item) => item.category === "Burgers"),
-    Sides: menuItems.filter((item) => item.category === "Sides"),
-    Drinks: menuItems.filter((item) => item.category === "Drinks"),
-    Sauces: menuItems.filter((item) => item.category === "Sauces"),
-    Desserts: menuItems.filter((item) => item.category === "Desserts"),
+    // Save back to localStorage
+    localStorage.setItem('fastbite-cart', JSON.stringify(existingCart));
+
+    // Show success message
+    alert(`Added ${item.name} to cart!`);
+
+    // Dispatch event for other components to listen to
+    window.dispatchEvent(new Event('cart-updated'));
   };
 
-  return (
-    <div
-      style={{
+  // Get emoji for category
+  const getCategoryEmoji = (category: string) => {
+    switch (category) {
+      case "Pizza": return "🍕";
+      case "Burger": return "🍔";
+      case "Wings": return "🍗";
+      case "Drink": return "🥤";
+      case "Dessert": return "🍰";
+      case "Sides": return "🍟";
+      default: return "🍽️";
+    }
+  };
+
+  // Filter only available items and group by category
+  const availableItems = menuItems.filter(item => item.available);
+
+  // Group items by category dynamically
+  const categories: Record<string, MenuItem[]> = {};
+  availableItems.forEach(item => {
+    if (!categories[item.category]) {
+      categories[item.category] = [];
+    }
+    categories[item.category].push(item);
+  });
+
+  // Sort categories for consistent display
+  const sortedCategories = Object.keys(categories).sort();
+
+  if (loading) {
+    return (
+      <div style={{
         padding: "20px",
         maxWidth: "1200px",
         margin: "0 auto",
         minHeight: "100vh",
-      }}
-    >
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column"
+      }}>
+        <div style={{ fontSize: "24px", color: "#ff6b35", marginBottom: "20px" }}>
+          Loading menu...
+        </div>
+        <div style={{ fontSize: "48px" }}>🍔</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{
+        padding: "20px",
+        maxWidth: "1200px",
+        margin: "0 auto",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column"
+      }}>
+        <div style={{ fontSize: "24px", color: "#ff6b35", marginBottom: "20px" }}>
+          {error}
+        </div>
+        <button
+          onClick={() => window.location.reload()}
+          style={{
+            backgroundColor: "#ff6b35",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "16px"
+          }}
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      padding: "20px",
+      maxWidth: "1200px",
+      margin: "0 auto",
+      minHeight: "100vh"
+    }}>
       {/* Header */}
       <div style={{ textAlign: "center", marginBottom: "40px" }}>
-        <h1
-          style={{ color: "#ff6b35", fontSize: "48px", marginBottom: "10px" }}
-        >
+        <h1 style={{ color: "#ff6b35", fontSize: "48px", marginBottom: "10px" }}>
           Our Menu
         </h1>
         <p style={{ fontSize: "20px", color: "white" }}>
-          Discover our delicious food selection with burgers, sides, drinks, and
-          more!
+          Discover our delicious food selection! ({availableItems.length} items available)
         </p>
       </div>
 
       {/* Menu by Categories with Dropdowns */}
-      {Object.entries(categories).map(([category, items]) => (
-        <div key={category} style={{ marginBottom: "20px" }}>
-          {/* Category Header - Clickable for dropdown */}
-          <div
-            style={{
-              backgroundColor: "#ff6b35",
-              color: "white",
-              padding: "15px 20px",
-              borderRadius: "8px",
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: expandedCategories[category] ? "20px" : "0",
-              transition: "all 0.3s ease",
-            }}
-            onClick={() => toggleCategory(category)}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#e55b25";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#ff6b35";
-            }}
-          >
-            <h2
+      {sortedCategories.map((category) => {
+        const items = categories[category];
+
+        return (
+          <div key={category} style={{ marginBottom: "20px" }}>
+            {/* Category Header - Clickable for dropdown */}
+            <div
               style={{
+                backgroundColor: "#ff6b35",
+                color: "white",
+                padding: "15px 20px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: expandedCategories[category] ? "20px" : "0",
+                transition: "all 0.3s ease"
+              }}
+              onClick={() => toggleCategory(category)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#e55b25";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#ff6b35";
+              }}
+            >
+              <h2 style={{
                 fontSize: "24px",
                 margin: "0",
                 display: "flex",
                 alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              {category} ({items.length} items)
-            </h2>
-            <span
-              style={{
+                gap: "10px"
+              }}>
+                <span>
+                  {getCategoryEmoji(category)}
+                </span>
+                {category} ({items.length} items)
+              </h2>
+              <span style={{
                 fontSize: "20px",
                 fontWeight: "bold",
                 transition: "transform 0.3s ease",
-                transform: expandedCategories[category]
-                  ? "rotate(180deg)"
-                  : "rotate(0deg)",
-              }}
-            >
-              ▼
-            </span>
-          </div>
+                transform: expandedCategories[category] ? "rotate(180deg)" : "rotate(0deg)"
+              }}>
+                ▼
+              </span>
+            </div>
 
-          {/* Category Items - Collapsible */}
-          {expandedCategories[category] && (
-            <div
-              style={{
+            {/* Category Items - Collapsible */}
+            {expandedCategories[category] && (
+              <div style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-                gap: "20px",
-              }}
-            >
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "20px",
-                    borderRadius: "12px",
-                    backgroundColor: "white",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-5px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 8px 25px rgba(0,0,0,0.15)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow =
-                      "0 2px 8px rgba(0,0,0,0.1)";
-                  }}
-                >
-                  {/* Name and Price Section */}
+                gap: "20px"
+              }}>
+                {items.map((item) => (
                   <div
+                    key={item._id}
                     style={{
+                      border: "1px solid #ddd",
+                      padding: "20px",
+                      borderRadius: "12px",
+                      backgroundColor: "white",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                      transition: "all 0.3s ease",
+                      position: "relative"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-5px)";
+                      e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
+                    }}
+                  >
+                    {/* Name and Price Section */}
+                    <div style={{
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "flex-start",
-                      marginBottom: "15px",
-                    }}
-                  >
-                    <div>
-                      <h3
-                        style={{
+                      marginBottom: "15px"
+                    }}>
+                      <div>
+                        <h3 style={{
                           fontSize: "20px",
                           margin: "0 0 8px 0",
-                          color: "#333",
-                        }}
-                      >
-                        {item.name}
-                      </h3>
-                      {item.isPopular && (
-                        <span
-                          style={{
-                            backgroundColor: "#ff6b35",
-                            color: "white",
-                            padding: "3px 10px",
-                            borderRadius: "20px",
-                            fontSize: "12px",
-                            fontWeight: "bold",
-                            display: "inline-block",
-                          }}
-                        >
-                          Popular
-                        </span>
-                      )}
-                    </div>
-                    <span
-                      style={{
+                          color: "#333"
+                        }}>
+                          {item.name}
+                        </h3>
+                      </div>
+                      <span style={{
                         fontSize: "18px",
                         fontWeight: "bold",
-                        color: "#ff6b35",
-                      }}
-                    >
-                      {item.price}
-                    </span>
-                  </div>
+                        color: "#ff6b35"
+                      }}>
+                        ${item.price.toFixed(2)}
+                      </span>
+                    </div>
 
-                  {/* Image Section */}
-                  <div
-                    style={{
+                    {/* Image Section */}
+                    <div style={{
                       width: "100%",
                       height: "200px",
                       backgroundColor: "#f5f5f5",
@@ -417,112 +313,140 @@ const Menu: React.FC = () => {
                       border: "1px solid #e0e0e0",
                       position: "relative",
                       overflow: "hidden",
-                    }}
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      style={{
-                        objectFit: "contain",
-                        objectPosition: "center",
-                        padding: "10px",
-                      }}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority={item.isPopular}
-                    />
-                  </div>
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}>
+                      {item.imageUrl ? (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            objectPosition: "center",
+                            padding: "10px"
+                          }}
+                          onError={(e) => {
+                            // If image fails to load, show fallback
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: "100%",
+                          color: "#888",
+                          fontSize: "16px",
+                          flexDirection: "column"
+                        }}>
+                          <div style={{ fontSize: "48px", marginBottom: "10px" }}>
+                            {getCategoryEmoji(item.category)}
+                          </div>
+                          No Image
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Description Section */}
-                  <p
-                    style={{
-                      color: "#666",
-                      margin: "0",
-                      fontSize: "14px",
-                      lineHeight: "1.5",
-                    }}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
+                    {/* Description Section */}
+                    {item.description && (
+                      <p style={{
+                        color: "#666",
+                        margin: "0 0 15px 0",
+                        fontSize: "14px",
+                        lineHeight: "1.5"
+                      }}>
+                        {item.description}
+                      </p>
+                    )}
+
+                    {/* Add to Cart Button */}
+                    <button
+                      onClick={() => addToCart(item)}
+                      style={{
+                        backgroundColor: "#ff6b35",
+                        color: "white",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        width: "100%",
+                        transition: "background-color 0.3s ease"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#e55b25";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "#ff6b35";
+                      }}
+                    >
+                      Add to Cart - ${item.price.toFixed(2)}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Show message if no items available */}
+      {availableItems.length === 0 && !loading && (
+        <div style={{
+          textAlign: "center",
+          padding: "60px 20px",
+          color: "white"
+        }}>
+          <div style={{ fontSize: "48px", marginBottom: "20px" }}>🍽️</div>
+          <h2 style={{ fontSize: "28px", marginBottom: "10px" }}>No Menu Items Available</h2>
+          <p style={{ fontSize: "18px" }}>Check back later for our delicious offerings!</p>
         </div>
-      ))}
+      )}
 
       {/* Special Offers */}
-      <div
-        style={{
-          backgroundColor: "#fffaf0",
-          padding: "30px",
-          borderRadius: "12px",
-          border: "2px solid #ff6b35",
-          marginTop: "40px",
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "28px",
-            margin: "0 0 20px 0",
-            color: "#ff6b35",
-            textAlign: "center",
-          }}
-        >
+      <div style={{
+        backgroundColor: "#fffaf0",
+        padding: "30px",
+        borderRadius: "12px",
+        border: "2px solid #ff6b35",
+        marginTop: "40px"
+      }}>
+        <h3 style={{
+          fontSize: "28px",
+          margin: "0 0 20px 0",
+          color: "#ff6b35",
+          textAlign: "center"
+        }}>
           Special Offers & Combos
         </h3>
-        <div
-          style={{
-            fontSize: "18px",
-            color: "#666",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "15px",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "15px",
-              borderRadius: "8px",
-              borderLeft: "4px solid #ff6b35",
-            }}
-          >
-            <strong>Classic Combo:</strong> Any burger + fries + drink for{" "}
-            <strong>$12.99</strong>
+        <div style={{
+          fontSize: "18px",
+          color: "#666",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "15px"
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            padding: "15px",
+            borderRadius: "8px",
+            borderLeft: "4px solid #ff6b35"
+          }}>
+            <strong>Classic Combo:</strong> Any burger + fries + drink for <strong>$12.99</strong>
           </div>
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "15px",
-              borderRadius: "8px",
-              borderLeft: "4px solid #ff6b35",
-            }}
-          >
-            <strong>Family Pack:</strong> 4 classic burgers + 2 large fries + 4 drinks
-            for <strong>$32.99</strong>
-          </div>
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "15px",
-              borderRadius: "8px",
-              borderLeft: "4px solid #ff6b35",
-            }}
-          >
-            <strong>Dessert Deal:</strong> Any burger + dessert + drink for{" "}
-            <strong>$13.99</strong>
-          </div>
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "15px",
-              borderRadius: "8px",
-              borderLeft: "4px solid #ff6b35",
-            }}
-          >
-            <strong>Sauce Lover:</strong> Any meal + 3 extra sauces for{" "}
-            <strong>$12.99</strong>
+          <div style={{
+            backgroundColor: "white",
+            padding: "15px",
+            borderRadius: "8px",
+            borderLeft: "4px solid #ff6b35"
+          }}>
+            <strong>Family Pack:</strong> 4 classic burgers + 2 large fries + 4 drinks for <strong>$32.99</strong>
           </div>
         </div>
       </div>
