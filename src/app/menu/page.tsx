@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useCart } from '@/contexts/CartContext'; // Import the cart context
 
 interface MenuItem {
   _id: string;
@@ -16,6 +17,7 @@ const Menu: React.FC = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { addItem } = useCart(); // Use the cart context
 
   // State to track which categories are expanded
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
@@ -66,7 +68,7 @@ const Menu: React.FC = () => {
     }));
   };
 
-  // Add to cart function
+  // Updated Add to Cart function using context
   const addToCart = (item: MenuItem) => {
     console.log('Adding to cart:', item);
 
@@ -78,28 +80,11 @@ const Menu: React.FC = () => {
       imageUrl: item.imageUrl
     };
 
-    // Get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem('fastbite-cart') || '[]');
-
-    // Check if item already exists in cart
-    const existingItemIndex = existingCart.findIndex((cartItem: any) => cartItem.id === item._id);
-
-    if (existingItemIndex > -1) {
-      // Update quantity if item exists
-      existingCart[existingItemIndex].quantity += 1;
-    } else {
-      // Add new item to cart
-      existingCart.push(cartItem);
-    }
-
-    // Save back to localStorage
-    localStorage.setItem('fastbite-cart', JSON.stringify(existingCart));
+    // Use the cart context to add item - this will automatically update all cart components
+    addItem(cartItem);
 
     // Show success message
     alert(`Added ${item.name} to cart!`);
-
-    // Dispatch event for other components to listen to
-    window.dispatchEvent(new Event('cart-updated'));
   };
 
   // Get emoji for category
