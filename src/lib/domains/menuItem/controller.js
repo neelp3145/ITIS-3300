@@ -1,112 +1,201 @@
-import { connectDB } from "../../database/connect.js";
-import MenuItem from "./schema/menuItem.schema.js";
+import { MenuItem } from './schema/menuItem.schema.js';
+import { connectDB } from '@/lib/database/connect.js';
 
-function assertId(id) {
-  if (!id || typeof id !== "string") throw new Error("Invalid id");
-}
+export const menuItemController = {
+  // Get all menu items
+  getAllMenuItems: async (req, res) => {
+    try {
+      await connectDB();
+      const { category, available } = req.query;
 
-function pickMenuFields(body = {}) {
-  const out = {};
-  if (body.name !== undefined) out.name = body.name;
-  if (body.description !== undefined) out.description = body.description;
-  if (body.price !== undefined) out.price = body.price;
-  if (body.category !== undefined) out.category = body.category;
-  if (body.available !== undefined) out.available = body.available;
-  if (body.imageUrl !== undefined) out.imageUrl = body.imageUrl;
-  return out;
-}
+      // Build filter object
+      const filter = {};
+      if (category) filter.category = category;
+      if (available !== undefined) filter.available = available === 'true';
 
-export async function listMenuItemsController(query = {}) {
-  await connectDB();
-  const filter = {};
-  if (query.category) filter.category = query.category;
-  if (query.available !== undefined)
-    filter.available = query.available === "true";
-  const items = await MenuItem.find(filter).sort({ createdAt: -1 });
-  return { status: 200, body: { ok: true, data: items } };
-}
+      const menuItems = await MenuItem.find(filter).sort({ category: 1, name: 1 });
 
-export async function getMenuItemController(id) {
-  await connectDB();
-  assertId(id);
-  const item = await MenuItem.findById(id);
-  if (!item)
-    return { status: 404, body: { ok: false, msg: "Menu item not found" } };
-  return { status: 200, body: { ok: true, data: item } };
-}
-
-export async function createMenuItemController(body) {
-  await connectDB();
-  const payload = pickMenuFields(body);
-
-  console.log("=== CREATE MENU ITEM REQUEST ===");
-  console.log("Payload:", payload);
-
-  if (!payload.name || payload.name.trim() === "") {
-    console.log("VALIDATION FAILED: Name is required");
-    return { status: 400, body: { ok: false, msg: "name is required" } };
-  }
-  if (payload.price == null) {
-    console.log("VALIDATION FAILED: Price is required");
-    return { status: 400, body: { ok: false, msg: "price is required" } };
-  }
-
-  payload.name = payload.name.trim();
-  const searchName = payload.name.toLowerCase();
-  console.log("Searching for duplicate with name:", searchName);
-
-  console.log("Fetching all existing items...");
-  const existingItems = await MenuItem.find({});
-  console.log("Total existing items:", existingItems.length);
-  console.log("Existing item names:", existingItems.map(item => item.name));
-
-  const existingItem = await MenuItem.findOne({
-    name: { $regex: new RegExp(`^${payload.name}$`, 'i') }
-  });
-
-  console.log("Duplicate check result:", existingItem);
-
-  if (existingItem) {
-    console.log("DUPLICATE FOUND:", existingItem.name);
-    return {
-      status: 409,
-      body: {
+      return res.json({
+        ok: true,
+        data: menuItems,
+        message: 'Menu items retrieved successfully'
+      });
+    } catch (error) {
+      console.error('Error fetching menu items:', error);
+      return res.status(500).json({
         ok: false,
-        msg: `DUPLICATE: Menu item "${payload.name}" already exists!`,
-        existingItemId: existingItem._id
+        message: 'Internal server error',
+        error: error.message
+      });
+    }
+  },
+
+  // Get menu item by ID
+  getMenuItemById: async (req, res) => {
+    try {
+      await connectDB();
+      const { id } = req.params;
+
+      const menuItem = await MenuItem.findById(id);
+
+      if (!menuItem) {
+        return res.status(404).json({
+          ok: false,
+          message: 'Menu item not found'
+        });
       }
-    };
+
+      return res.json({
+        ok: true,
+        data: menuItem,
+        message: 'Menu item retrieved successfully'
+      });
+    } catch (error) {
+      console.error('Error fetching menu item:', error);
+      return res.status(500).json({
+        ok: false,
+        message: 'Internal server error',
+        error: error.message
+      });
+    }
+  },
+
+  // Create new menu item
+  createMenuItem: async (req, res) => {
+    try {
+      await connectDB();
+      const menuItemData = req.body;
+
+      const newMenuItem = new MenuItem(menuItemData);
+      const savedMenuItem = await newMenuItem.save();
+
+      return res.status(201).json({
+        ok: true,
+        data: savedMenuItem,
+        message: 'Menu item created successfully'
+      });
+    } catch (error) {
+      console.error('Error creating menu item:', error);
+
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({
+          ok: false,
+          message: 'Validation error',
+          error: error.message
+        });
+      }
+
+      return res.status(500).json({
+        ok: false,
+        message: 'Internal server error',
+        error: error.message
+      });
+    }
+  },
+
+  // Update menu item
+  updateMenuItem: async (req, res) => {
+    try {
+      await connectDB();
+      const { id } = req.params;
+      const updateData = req.body;
+
+      const updatedMenuItem = await MenuItem.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedMenuItem) {
+        return res.status(404).json({
+          ok: false,
+          message: 'Menu item not found'
+        });
+      }
+
+      return res.json({
+        ok: true,
+        data: updatedMenuItem,
+        message: 'Menu item updated successfully'
+      });
+    } catch (error) {
+      console.error('Error updating menu item:', error);
+
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({
+          ok: false,
+          message: 'Validation error',
+          error: error.message
+        });
+      }
+
+      return res.status(500).json({
+        ok: false,
+        message: 'Internal server error',
+        error: error.message
+      });
+    }
+  },
+
+  // Delete menu item
+  deleteMenuItem: async (req, res) => {
+    try {
+      await connectDB();
+      const { id } = req.params;
+
+      const deletedMenuItem = await MenuItem.findByIdAndDelete(id);
+
+      if (!deletedMenuItem) {
+        return res.status(404).json({
+          ok: false,
+          message: 'Menu item not found'
+        });
+      }
+
+      return res.json({
+        ok: true,
+        message: 'Menu item deleted successfully'
+      });
+    } catch (error) {
+      console.error('Error deleting menu item:', error);
+      return res.status(500).json({
+        ok: false,
+        message: 'Internal server error',
+        error: error.message
+      });
+    }
+  },
+
+  // Search menu items
+  searchMenuItems: async (req, res) => {
+    try {
+      await connectDB();
+      const { q } = req.query;
+
+      if (!q) {
+        return res.status(400).json({
+          ok: false,
+          message: 'Search query is required'
+        });
+      }
+
+      const menuItems = await MenuItem.find({
+        $text: { $search: q },
+        available: true
+      }).sort({ score: { $meta: 'textScore' } });
+
+      return res.json({
+        ok: true,
+        data: menuItems,
+        message: 'Search completed successfully'
+      });
+    } catch (error) {
+      console.error('Error searching menu items:', error);
+      return res.status(500).json({
+        ok: false,
+        message: 'Internal server error',
+        error: error.message
+      });
+    }
   }
-
-  console.log("No duplicate found, creating new item...");
-
-  if (payload.price < 0) {
-    console.log("VALIDATION FAILED: Price must be positive");
-    return { status: 400, body: { ok: false, msg: "price must be positive" } };
-  }
-  const created = await MenuItem.create(payload);
-  console.log("ITEM CREATED SUCCESSFULLY:", created.name);
-  return { status: 201, body: { ok: true, data: created } };
-}
-
-export async function updateMenuItemController(id, body) {
-  await connectDB();
-  assertId(id);
-  const payload = pickMenuFields(body);
-  const updated = await MenuItem.findByIdAndUpdate(id, payload, {
-    new: true,
-    runValidators: true,
-  });
-  if (!updated)
-    return { status: 404, body: { ok: false, msg: "Menu item not found" } };
-  return { status: 200, body: { ok: true, data: updated } };
-}
-
-export async function deleteMenuItemController(id) {
-  await connectDB();
-  assertId(id);
-  const deleted = await MenuItem.findByIdAndDelete(id);
-  if (!deleted)
-    return { status: 404, body: { ok: false, msg: "Menu item not found" } };
-  return { status: 200, body: { ok: true, data: deleted } };
-}
+};

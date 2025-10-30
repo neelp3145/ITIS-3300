@@ -1,26 +1,70 @@
-import { NextResponse } from "next/server";
-import {
-  getMenuItemController,
-  updateMenuItemController,
-  deleteMenuItemController,
-} from "../../../../lib/domains/menuItem/controller.js";
+import { menuItemController } from '@/lib/domains/menuItem/controller.js';
 
+export async function GET(request, { params }) {
+  try {
+    const req = { params };
+    const res = {
+      json: (data) => data,
+      status: (code) => ({ json: (data) => ({ ...data, status: code }) })
+    };
 
-export async function GET(_req, ctx) {
-  const { id } = await ctx.params;       
-  const { status, body } = await getMenuItemController(id);
-  return NextResponse.json(body, { status });
+    const result = await menuItemController.getMenuItemById(req, res);
+    return Response.json(result, { status: result.status || 200 });
+  } catch (error) {
+    console.error('Error fetching menu item:', error);
+    return Response.json({
+      ok: false,
+      message: 'Internal server error',
+      error: error.message
+    }, { status: 500 });
+  }
 }
 
-export async function PUT(req, ctx) {
-  const { id } = await ctx.params;  
-  const json = await req.json();
-  const { status, body } = await updateMenuItemController(id, json);
-  return NextResponse.json(body, { status });
+export async function PUT(request, { params }) {
+  try {
+    const body = await request.json();
+
+    const req = {
+      params,
+      body
+    };
+    const res = {
+      status: (code) => ({
+        json: (data) => ({ ...data, status: code })
+      }),
+      json: (data) => data
+    };
+
+    const result = await menuItemController.updateMenuItem(req, res);
+    return Response.json(result, { status: result.status || 200 });
+  } catch (error) {
+    console.error('Error updating menu item:', error);
+    return Response.json({
+      ok: false,
+      message: 'Internal server error',
+      error: error.message
+    }, { status: 500 });
+  }
 }
 
-export async function DELETE(_req, ctx) {
-  const { id } = await ctx.params; 
-  const { status, body } = await deleteMenuItemController(id);
-  return NextResponse.json(body, { status });
+export async function DELETE(request, { params }) {
+  try {
+    const req = { params };
+    const res = {
+      status: (code) => ({
+        json: (data) => ({ ...data, status: code })
+      }),
+      json: (data) => data
+    };
+
+    const result = await menuItemController.deleteMenuItem(req, res);
+    return Response.json(result, { status: result.status || 200 });
+  } catch (error) {
+    console.error('Error deleting menu item:', error);
+    return Response.json({
+      ok: false,
+      message: 'Internal server error',
+      error: error.message
+    }, { status: 500 });
+  }
 }

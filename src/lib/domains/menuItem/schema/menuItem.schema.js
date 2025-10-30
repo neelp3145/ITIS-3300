@@ -1,39 +1,61 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import mongoose from 'mongoose';
 
-const menuItemSchema = new Schema({
+const menuItemSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Menu item name is required'],
     trim: true,
-    unique: true,
+    maxlength: [100, 'Name cannot exceed 100 characters']
   },
   description: {
     type: String,
-    trim: true,
+    required: [true, 'Description is required'],
+    maxlength: [500, 'Description cannot exceed 500 characters']
   },
   price: {
     type: Number,
-    required: true,
-    min: 0,
+    required: [true, 'Price is required'],
+    min: [0, 'Price cannot be negative']
   },
   category: {
     type: String,
-    enum: ["Pizza", "Burger", "Wings", "Drink", "Dessert", "Sides", "Other"],
-    default: "Other",
+    required: [true, 'Category is required'],
+    enum: {
+      values: ['Pizza', 'Burger', 'Wings', 'Drink', 'Dessert', 'Sides', 'Other'],
+      message: '{VALUE} is not a valid category'
+    }
   },
   available: {
     type: Boolean,
-    default: true,
+    default: true
   },
   imageUrl: {
     type: String,
-    trim: true,
+    default: ''
   },
+  ingredients: {
+    type: [String],
+    default: []
+  },
+  preparationTime: {
+    type: Number, // in minutes
+    default: 15
+  },
+  spicyLevel: {
+    type: String,
+    enum: ['Mild', 'Medium', 'Hot', 'Extra Hot'],
+    default: 'Mild'
+  },
+  calories: {
+    type: Number,
+    default: 0
+  }
 }, {
   timestamps: true
 });
 
-menuItemSchema.index({ name: 1, category: 1 }, { unique: true });
+// Create index for better query performance
+menuItemSchema.index({ category: 1, available: 1 });
+menuItemSchema.index({ name: 'text', description: 'text' });
 
-export default mongoose.models.MenuItem || mongoose.model("MenuItem", menuItemSchema);
+export const MenuItem = mongoose.models.MenuItem || mongoose.model('MenuItem', menuItemSchema);
