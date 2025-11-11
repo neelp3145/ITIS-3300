@@ -37,7 +37,6 @@ function validateCustomerData(body) {
     errors.push({ path: "email", msg: "Valid email required" });
   }
 
- 
   if (
     !body.password ||
     typeof body.password !== "string" ||
@@ -49,7 +48,6 @@ function validateCustomerData(body) {
     });
   }
 
- 
   if (
     !body.phoneNumber ||
     typeof body.phoneNumber !== "string" ||
@@ -57,7 +55,6 @@ function validateCustomerData(body) {
   ) {
     errors.push({ path: "phoneNumber", msg: "phoneNumber is required" });
   }
-
 
   const addr = body.address;
   if (!addr || typeof addr !== "object") {
@@ -114,28 +111,22 @@ export async function signupCustomerController(bodyRaw) {
     orderHistory,
   } = body;
 
-
   const existing = await User.findOne({ email }).lean();
   if (existing) {
     return { status: 409, body: { ok: false, msg: "Email already in use" } };
   }
 
   try {
+    const hashed = await bcrypt.hash(password, 10);
     const newCustomer = await Customer.create({
       firstName,
       lastName,
       email,
-      password,
+      password: hashed,
       phoneNumber,
       address,
       orderHistory,
     });
-
-    // Issue JWT (optional—uncomment if you want to return it)
-    // const token = signToken({
-    //   sub: newCustomer._id.toString(),
-    //   role: "customer",
-    // });
 
     return {
       status: 201,
@@ -143,7 +134,7 @@ export async function signupCustomerController(bodyRaw) {
         ok: true,
         msg: "Customer registered successfully",
         data: newCustomer.toJSON(),
-        //token,
+        data: sanitizeUser(newCustomer),
       },
     };
   } catch (err) {
@@ -197,8 +188,6 @@ export async function loginCustomerController(bodyRaw) {
     if (!isMatch) {
       return { status: 401, body: { ok: false, msg: "Invalid credentials" } };
     }
-
-
 
     return {
       status: 200,
