@@ -23,9 +23,9 @@ const Home: React.FC = () => {
 
   const buttonStyle = {
     size: "lg",
-    bg: "#ff6b35",
+    bg: "orange.500",
     m: 4,
-    _hover: { bg: "#e55b25" },
+    _hover: { bg: "orange.600" },
   };
 
   return (
@@ -47,15 +47,14 @@ const Home: React.FC = () => {
         <Text textStyle="3xl" m={2}>
           Your go-to spot for midnight cravings
         </Text>
-        <Link
-          href="/menu"
-          style={{ textDecoration: "none" }}
-          display={"inline-block"}
-        >
           <Button css={buttonStyle} color="white">
             Explore Our Menu
+            <Link
+              href="/menu"
+              style={{ textDecoration: "none" }}
+              display={"inline-block"}
+            >Explore Our Menu</Link>
           </Button>
-        </Link>
       </Box>
     </Box>
   );

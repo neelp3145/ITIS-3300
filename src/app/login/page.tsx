@@ -134,14 +134,14 @@ const Login = () => {
               <Button
                 type="submit"
                 isLoading={isLoading}
-                bg="#ff6b35"
+                bg="orange.500"
                 color="black"
                 fontWeight="bold"
                 _hover={{
-                  bg: "#e55b25",
+                  bg: "orange.600",
                 }}
                 _active={{
-                  bg: "#cc4a1a"
+                  bg: "orange.700"
                 }}
                 size="lg"
               >
