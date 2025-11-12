@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import heroImage from "@/assets/images/hero-image.jpg";
+import NextLink from "next/link";
 import { Box, Link, Heading, Text, Button } from "@chakra-ui/react";
 
 const Home: React.FC = () => {
@@ -24,6 +25,7 @@ const Home: React.FC = () => {
   const buttonStyle = {
     size: "lg",
     bg: "orange.500",
+    color: "white",
     m: 4,
     _hover: { bg: "orange.600" },
   };
@@ -47,14 +49,9 @@ const Home: React.FC = () => {
         <Text textStyle="3xl" m={2}>
           Your go-to spot for midnight cravings
         </Text>
-          <Button css={buttonStyle} color="white">
-            Explore Our Menu
-            <Link
-              href="/menu"
-              style={{ textDecoration: "none" }}
-              display={"inline-block"}
-            >Explore Our Menu</Link>
-          </Button>
+          <NextLink href="/menu" >
+            <Button css={buttonStyle}>Explore Our Menu</Button>
+          </NextLink>
       </Box>
     </Box>
   );

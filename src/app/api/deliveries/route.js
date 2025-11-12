@@ -3,7 +3,6 @@ import {
   listDeliveriesController,
   createDeliveryController,
 } from "@/domains/delivery/controller.js";
-import { withJson, requireAuth } from "@/domains/user/auth.js";
 
 export const GET = withJson(async () => {
   requireAuth("employee");
