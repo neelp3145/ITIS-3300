@@ -6,7 +6,6 @@ import fastbiteLogo from "@/assets/images/fastbite-logo.png";
 import { Box, Flex, HStack, Link, Button, Badge } from "@chakra-ui/react";
 import { useCart } from '@/contexts/CartContext';
 import { CartDialog } from '@/components/cart/cartDialog';
-import LoginButton from "@/components/ui/loginButton/loginButton";
 import NextLink from "next/link";
 
 const Header = () => {
@@ -43,10 +42,10 @@ const Header = () => {
     gap: 4,
   };
 
-  // Consistent button style for both Login and Cart - Orange with black text
+  // Consistent button style for both Login and Cart - Orange with white text
   const buttonStyle = {
-    bg: "#ff6b35", // Orange background
-    color: "black", // Black text
+    bg: "orange.500",
+    color: "white",
     fontWeight: "bold",
     fontSize: "16px",
     padding: "10px 20px",
@@ -55,20 +54,21 @@ const Header = () => {
     cursor: "pointer",
     transition: "all 0.2s ease-in-out",
     _hover: {
-      bg: "#e55b25", // Darker orange on hover
-      color: "black", // Keep text black on hover
+      bg: "orange.600", 
+      color: "white",
       transform: "translateY(-2px)",
-      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)"
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+      textDecoration: "none"
     },
     _active: {
-      bg: "#cc4a1a", // Even darker orange when pressed
-      color: "black", // Keep text black when pressed
+      bg: "#cc4a1a",
+      color: "white",
       transform: "translateY(0)"
     }
   };
 
   return (
-    <Box as="header" role="contentinfo" sx={headerStyle}>
+    <Box as="header" role="contentinfo" css={headerStyle}>
       <Flex {...flexStyle}>
         <Box {...flexItemStyle} gap={8}>
           {/* Logo */}
@@ -85,16 +85,16 @@ const Header = () => {
           {/* Navigation Links */}
           <nav>
             <HStack gap={6} align="center">
-              <Link as={NextLink} href="/" sx={linkStyle}>
+              <Link as={NextLink} href="/" css={linkStyle}>
                 Home
               </Link>
-              <Link as={NextLink} href="/menu" sx={linkStyle}>
+              <Link as={NextLink} href="/menu" css={linkStyle}>
                 Menu
               </Link>
-              <Link as={NextLink} href="/contact" sx={linkStyle}>
+              <Link as={NextLink} href="/contact" css={linkStyle}>
                 Contact
               </Link>
-              <Link as={NextLink} href="/about" sx={linkStyle}>
+              <Link as={NextLink} href="/about" css={linkStyle}>
                 About Us
               </Link>
             </HStack>
@@ -102,19 +102,15 @@ const Header = () => {
         </Box>
 
         <Box {...flexItemStyle} gap={3}>
-          {/* Login Button - Orange with black text */}
-          <Button
-            as={NextLink}
-            href="/login"
-            sx={buttonStyle}
-          >
-            Login
+          {/* Login Button - Orange with white text */}
+          <Button css={buttonStyle}>
+            <Link as={NextLink} style={{listStyle: "none"}} href="/login">Login</Link>
           </Button>
 
-          {/* Cart Button - Orange with black text */}
+          {/* Cart Button - Orange with white text */}
           <Button
             onClick={() => setIsOpen(true)}
-            sx={buttonStyle}
+            css={buttonStyle}
             position="relative"
           >
             Cart

@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import {
   listDeliveriesController,
   createDeliveryController,
-} from "../../../lib/domains/delivery/controller.js";
-import { withJson, requireAuth } from "../../../lib/domains/user/guards.js";
+} from "@/domains/delivery/controller.js";
 
 export const GET = withJson(async () => {
   requireAuth("employee");

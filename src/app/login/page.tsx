@@ -70,9 +70,12 @@ const Login = () => {
             </Stack>
 
             {error && (
-              <Alert status="error" borderRadius="md">
-                {error}
-              </Alert>
+              <Alert.Root>
+                <Alert.Content>
+                  <Alert.Title>Error</Alert.Title>
+                  <Alert.Description>{error}</Alert.Description>
+                </Alert.Content>
+              </Alert.Root> 
             )}
 
             <Stack as="form" gap={4} onSubmit={handleSubmit}>
@@ -133,15 +136,15 @@ const Login = () => {
 
               <Button
                 type="submit"
-                isLoading={isLoading}
-                bg="#ff6b35"
-                color="black"
+                loading={isLoading}
+                bg="orange.500"
+                color="white"
                 fontWeight="bold"
                 _hover={{
-                  bg: "#e55b25",
+                  bg: "orange.600",
                 }}
                 _active={{
-                  bg: "#cc4a1a"
+                  bg: "orange.700"
                 }}
                 size="lg"
               >
@@ -151,7 +154,7 @@ const Login = () => {
 
             <Text fontSize="sm" color="gray.600" textAlign="center">
               Don&apos;t have an account?{" "}
-              <Link as={NextLink} href="/signup" color="#ff6b35" fontWeight="semibold">
+              <Link as={NextLink} href="/signup" color="orange.500" fontWeight="semibold">
                 Sign up
               </Link>
             </Text>

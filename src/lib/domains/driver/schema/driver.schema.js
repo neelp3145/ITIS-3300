@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User from "./user.base.js";
+import User from "@/domains/user/schema/user.schema.js";
 
 const { Schema } = mongoose;
 

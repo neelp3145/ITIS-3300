@@ -3,7 +3,6 @@ import {
   listDriversController,
   createDriverController,
 } from "../../../lib/domains/driver/controller.js";
-import { withJson, requireAuth } from "../../../lib/domains/user/guards.js";
 
 export const GET = withJson(async () => {
   requireAuth("employee"); // only employees can list

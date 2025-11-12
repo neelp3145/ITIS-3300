@@ -49,7 +49,7 @@ const AboutUs: React.FC = () => {
       <Container maxW="6xl" lineHeight={1.6}>
         {/* Header Section */}
         <Box textAlign="center" mb={12}>
-          <Heading color="#ff6b35" fontSize={{ base: "3xl", md: "5xl" }} mb={5}>
+          <Heading color="orange.500" fontSize={{ base: "3xl", md: "5xl" }} mb={5}>
             About FastBite
           </Heading>
           <Text fontSize="lg" color="white" maxW="600px" mx="auto">
@@ -97,7 +97,7 @@ const AboutUs: React.FC = () => {
 
         {/* Our Mission Section */}
         <Box css={missionStyle}>
-          <Heading color="#ff6b35" fontSize={{ base: "2xl", md: "3xl" }} mb={5}>
+          <Heading color="orange.500" fontSize={{ base: "2xl", md: "3xl" }} mb={5}>
             Our Mission
           </Heading>
           <Text css={missionTextStyle}>
