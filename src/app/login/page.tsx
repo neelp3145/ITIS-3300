@@ -92,6 +92,7 @@ const Login = () => {
                   placeholder="you@example.com"
                   required
                   bg="white"
+                  color="black"
                   borderColor="gray.300"
                   _hover={{ borderColor: "gray.400" }}
                   _focusVisible={{
@@ -114,6 +115,7 @@ const Login = () => {
                   placeholder="••••••••"
                   required
                   bg="white"
+                  color="black"
                   borderColor="gray.300"
                   _hover={{ borderColor: "gray.400" }}
                   _focusVisible={{
