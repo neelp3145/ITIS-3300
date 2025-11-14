@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import heroImage from "@/assets/images/hero-image.jpg";
+import heroImage from "@/assets/hero-image.jpg";
 import NextLink from "next/link";
 import { Box, Link, Heading, Text, Button } from "@chakra-ui/react";
 

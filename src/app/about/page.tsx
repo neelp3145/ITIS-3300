@@ -10,7 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import grillShot from "@/assets/images/grill-shot.jpg";
+import grillShot from "@/assets/grill-shot.jpg";
 
 
 const AboutUs: React.FC = () => {

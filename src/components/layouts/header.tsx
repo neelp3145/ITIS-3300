@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import fastbiteLogo from "@/assets/images/fastbite-logo.png";
+import fastbiteLogo from "@/assets/fastbite-logo.png";
 import { Box, Flex, HStack, Link, Button, Badge } from "@chakra-ui/react";
 import { useCart } from '@/contexts/CartContext';
 import { CartDialog } from '@/components/cart/cartDialog';

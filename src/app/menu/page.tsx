@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useCart } from '@/contexts/CartContext'; // Import the cart context
+import Image from "next/image";
 
 interface MenuItem {
   _id: string;
@@ -10,7 +11,7 @@ interface MenuItem {
   price: number;
   category: string;
   available: boolean;
-  imageUrl: string;
+  image: string;
 }
 
 const Menu: React.FC = () => {
@@ -77,7 +78,7 @@ const Menu: React.FC = () => {
       name: item.name,
       price: item.price,
       quantity: 1,
-      imageUrl: item.imageUrl
+      image: item.image
     };
 
     // Use the cart context to add item - this will automatically update all cart components
@@ -85,19 +86,6 @@ const Menu: React.FC = () => {
 
     // Show success message
     alert(`Added ${item.name} to cart!`);
-  };
-
-  // Get emoji for category
-  const getCategoryEmoji = (category: string) => {
-    switch (category) {
-      case "Pizza": return "🍕";
-      case "Burger": return "🍔";
-      case "Wings": return "🍗";
-      case "Drink": return "🥤";
-      case "Dessert": return "🍰";
-      case "Sides": return "🍟";
-      default: return "🍽️";
-    }
   };
 
   // Filter only available items and group by category
@@ -220,9 +208,6 @@ const Menu: React.FC = () => {
                 alignItems: "center",
                 gap: "10px"
               }}>
-                <span>
-                  {getCategoryEmoji(category)}
-                </span>
                 {category} ({items.length} items)
               </h2>
               <span style={{
@@ -300,19 +285,16 @@ const Menu: React.FC = () => {
                       overflow: "hidden",
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center"
+                      justifyContent: "center",
+                      padding: "10px"
                     }}>
-                      {item.imageUrl ? (
-                        <img
-                          src={item.imageUrl}
+                      {item.image ? (
+                        <Image
+                          src={`/assets/${item.image}`}
                           alt={item.name}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "contain",
-                            objectPosition: "center",
-                            padding: "10px"
-                          }}
+                          fill={true}
+                          objectFit="contain"
+                          objectPosition="center"
                           onError={(e) => {
                             // If image fails to load, show fallback
                             const target = e.target as HTMLImageElement;
@@ -329,9 +311,6 @@ const Menu: React.FC = () => {
                           fontSize: "16px",
                           flexDirection: "column"
                         }}>
-                          <div style={{ fontSize: "48px", marginBottom: "10px" }}>
-                            {getCategoryEmoji(item.category)}
-                          </div>
                           No Image
                         </div>
                       )}
