@@ -54,7 +54,7 @@ const Header = () => {
     cursor: "pointer",
     transition: "all 0.2s ease-in-out",
     _hover: {
-      bg: "orange.600", 
+      bg: "orange.600",
       color: "white",
       transform: "translateY(-2px)",
       boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
@@ -91,6 +91,9 @@ const Header = () => {
               <Link as={NextLink} href="/menu" css={linkStyle}>
                 Menu
               </Link>
+              <Link as={NextLink} href="/track-order" css={linkStyle}>
+                Track My Order
+              </Link>
               <Link as={NextLink} href="/contact" css={linkStyle}>
                 Contact
               </Link>
@@ -102,6 +105,13 @@ const Header = () => {
         </Box>
 
         <Box {...flexItemStyle} gap={3}>
+          {/* Restaurant Dashboard Button */}
+          <Button css={buttonStyle}>
+            <Link as={NextLink} style={{listStyle: "none"}} href="/restaurant/dashboard">
+              Restaurant Dashboard
+            </Link>
+          </Button>
+
           {/* Login Button - Orange with white text */}
           <Button css={buttonStyle}>
             <Link as={NextLink} style={{listStyle: "none"}} href="/login">Login</Link>

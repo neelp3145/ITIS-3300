@@ -1,4 +1,4 @@
-import { listOrdersController } from "../../../lib/domains/order/controller.js";
+import listOrdersController from "../../../lib/domains/order/controller.js";
 function cid(req) {
   return req.headers.get("x-customer-id");
 }
