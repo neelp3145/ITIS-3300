@@ -3,7 +3,6 @@ import Header from "@/components/layouts/header";
 import Footer from "@/components/layouts/footer";
 import { ReactNode } from "react";
 import { CartProvider } from "@/contexts/CartContext";
-import SessionProvider from "@/components/providers/SessionProvider";
 
 interface RootLayoutProps {
   children: ReactNode;
