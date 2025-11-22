@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 export interface CartItem {
   id: string;
@@ -27,7 +33,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const useCart = () => {
   const context = useContext(CartContext);
   if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };
@@ -42,12 +48,12 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('fastbite-cart');
+    const savedCart = localStorage.getItem("fastbite-cart");
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart));
       } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
+        console.error("Error loading cart from localStorage:", error);
         setItems([]);
       }
     }
@@ -55,12 +61,14 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   // Save cart to localStorage whenever items change
   useEffect(() => {
-    localStorage.setItem('fastbite-cart', JSON.stringify(items));
+    localStorage.setItem("fastbite-cart", JSON.stringify(items));
   }, [items]);
 
   const addItem = (newItem: CartItem) => {
-    setItems(prevItems => {
-      const existingItemIndex = prevItems.findIndex(item => item.id === newItem.id);
+    setItems((prevItems) => {
+      const existingItemIndex = prevItems.findIndex(
+        (item) => item.id === newItem.id
+      );
 
       if (existingItemIndex > -1) {
         // Update quantity if item exists
@@ -75,7 +83,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const removeItem = (itemId: string) => {
-    setItems(prevItems => prevItems.filter(item => item.id !== itemId));
+    setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
@@ -84,8 +92,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       return;
     }
 
-    setItems(prevItems =>
-      prevItems.map(item =>
+    setItems((prevItems) =>
+      prevItems.map((item) =>
         item.id === itemId ? { ...item, quantity } : item
       )
     );
@@ -100,24 +108,24 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const getTotalPrice = () => {
-    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   // Listen for cart-updated events from other components
   useEffect(() => {
     const handleCartUpdate = () => {
-      const savedCart = localStorage.getItem('fastbite-cart');
+      const savedCart = localStorage.getItem("fastbite-cart");
       if (savedCart) {
         try {
           setItems(JSON.parse(savedCart));
         } catch (error) {
-          console.error('Error updating cart from event:', error);
+          console.error("Error updating cart from event:", error);
         }
       }
     };
 
-    window.addEventListener('cart-updated', handleCartUpdate);
-    return () => window.removeEventListener('cart-updated', handleCartUpdate);
+    window.addEventListener("cart-updated", handleCartUpdate);
+    return () => window.removeEventListener("cart-updated", handleCartUpdate);
   }, []);
 
   const value: CartContextType = {
@@ -129,7 +137,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     getTotalItems,
     getTotalPrice,
     isOpen,
-    setIsOpen
+    setIsOpen,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

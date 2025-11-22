@@ -49,9 +49,9 @@ const Home: React.FC = () => {
         <Text textStyle="3xl" m={2}>
           Your go-to spot for midnight cravings
         </Text>
-          <NextLink href="/menu" >
-            <Button css={buttonStyle}>Explore Our Menu</Button>
-          </NextLink>
+        <NextLink href="/menu">
+          <Button css={buttonStyle}>Explore Our Menu</Button>
+        </NextLink>
       </Box>
     </Box>
   );

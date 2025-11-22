@@ -15,6 +15,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'warn',
     'quotes': ['error', 'double'],
     'semi': ['error', 'always'],
+    'endOfLine': ["error", "auto"],
     // Add other ESLint rules as needed
   },
   ignorePatterns: ['node_modules/', 'build/', '.next/'],

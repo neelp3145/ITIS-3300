@@ -13,11 +13,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <html suppressHydrationWarning>
       <body>
         <Provider>
-            <CartProvider>
-              <Header />
-              {children}
-              <Footer />
-            </CartProvider>
+          <CartProvider>
+            <Header />
+            {children}
+            <Footer />
+          </CartProvider>
         </Provider>
       </body>
     </html>

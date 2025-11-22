@@ -15,41 +15,45 @@ import {
   Input,
   Link,
   Button,
-  Alert
+  Alert,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import { login } from "@/app/actions/auth";
 
 const Login = () => {
+  const [state, loginAction] = useActionState(login, undefined);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   setError("");
 
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+  //   try {
+  //     const result = await signIn("credentials", {
+  //       email,
+  //       password,
+  //       redirect: false,
+  //     });
 
-      if (result?.error) {
-        setError("Invalid email or password");
-      } else {
-        router.push("/");
-        router.refresh();
-      }
-    } catch (error) {
-      setError("An error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     if (result?.error) {
+  //       setError("Invalid email or password");
+  //     } else {
+  //       router.push("/");
+  //       router.refresh();
+  //     }
+  //   } catch (error) {
+  //     setError("An error occurred. Please try again.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <Container maxW="lg" py={12}>
@@ -65,7 +69,9 @@ const Login = () => {
         >
           <Stack gap={6}>
             <Stack gap={1} textAlign="center">
-              <Heading size="lg" color="gray.800">Welcome back</Heading>
+              <Heading size="lg" color="gray.800">
+                Welcome back
+              </Heading>
               <Text color="gray.600">Sign in to your FastBite account</Text>
             </Stack>
 
@@ -75,88 +81,94 @@ const Login = () => {
                   <Alert.Title>Error</Alert.Title>
                   <Alert.Description>{error}</Alert.Description>
                 </Alert.Content>
-              </Alert.Root> 
+              </Alert.Root>
             )}
 
-            <Stack as="form" gap={4} onSubmit={handleSubmit}>
-              <Field.Root>
-                <Field.Label htmlFor="email" color="gray.700">
-                  <Field.RequiredIndicator />
-                  Email address
-                </Field.Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                  bg="white"
-                  color="black"
-                  borderColor="gray.300"
-                  _hover={{ borderColor: "gray.400" }}
-                  _focusVisible={{
-                    borderColor: "#ff6b35",
-                    boxShadow: "0 0 0 1px #ff6b35"
-                  }}
-                />
-              </Field.Root>
+            <form action={loginAction}>
+              <Stack gap={4}>
+                <Field.Root>
+                  <Field.Label htmlFor="email" color="gray.700">
+                    <Field.RequiredIndicator />
+                    Email address
+                  </Field.Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    required
+                    bg="white"
+                    color="black"
+                    borderColor="gray.300"
+                    _hover={{ borderColor: "gray.400" }}
+                    _focusVisible={{
+                      borderColor: "#ff6b35",
+                      boxShadow: "0 0 0 1px #ff6b35",
+                    }}
+                  />
+                </Field.Root>
+                {state?.errors?.email && <p>{state.errors.email}</p>}
 
-              <Field.Root>
-                <Field.Label htmlFor="password" color="gray.700">
-                  <Field.RequiredIndicator />
-                  Password
-                </Field.Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  bg="white"
-                  color="black"
-                  borderColor="gray.300"
-                  _hover={{ borderColor: "gray.400" }}
-                  _focusVisible={{
-                    borderColor: "#ff6b35",
-                    boxShadow: "0 0 0 1px #ff6b35"
-                  }}
-                />
-              </Field.Root>
+                <Field.Root>
+                  <Field.Label htmlFor="password" color="gray.700">
+                    <Field.RequiredIndicator />
+                    Password
+                  </Field.Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    bg="white"
+                    color="black"
+                    borderColor="gray.300"
+                    _hover={{ borderColor: "gray.400" }}
+                    _focusVisible={{
+                      borderColor: "#ff6b35",
+                      boxShadow: "0 0 0 1px #ff6b35",
+                    }}
+                  />
+                </Field.Root>
+                {state?.errors?.password && (
+                  <div>
+                    <p>Password must:</p>
+                    <ul>
+                      {state.errors.password.map((error) => (
+                        <li key={error}>- {error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-              <Flex justify="space-between" align="center">
-                <Checkbox.Root color="gray.700">
-                  <Checkbox.HiddenInput id="remember" />
-                  <Checkbox.Control />
-                  <Checkbox.Label>Remember me</Checkbox.Label>
-                </Checkbox.Root>
-                <Link as={NextLink} href="/forgot-password" color="#ff6b35" fontWeight="semibold">
-                  Forgot password?
-                </Link>
-              </Flex>
-
-              <Button
-                type="submit"
-                loading={isLoading}
-                bg="orange.500"
-                color="white"
-                fontWeight="bold"
-                _hover={{
-                  bg: "orange.600",
-                }}
-                _active={{
-                  bg: "orange.700"
-                }}
-                size="lg"
-              >
-                Sign in
-              </Button>
-            </Stack>
-
+                <Flex justify="space-between" align="center">
+                  <Checkbox.Root color="gray.700">
+                    <Checkbox.HiddenInput id="remember" />
+                    <Checkbox.Control />
+                    <Checkbox.Label>Remember me</Checkbox.Label>
+                  </Checkbox.Root>
+                  <Link
+                    as={NextLink}
+                    href="/forgot-password"
+                    color="#ff6b35"
+                    fontWeight="semibold"
+                  >
+                    Forgot password?
+                  </Link>
+                </Flex>
+              </Stack>
+            </form>
+            <SubmitButton />
             <Text fontSize="sm" color="gray.600" textAlign="center">
               Don&apos;t have an account?{" "}
-              <Link as={NextLink} href="/signup" color="orange.500" fontWeight="semibold">
+              <Link
+                as={NextLink}
+                href="/signup"
+                color="orange.500"
+                fontWeight="semibold"
+              >
                 Sign up
               </Link>
             </Text>
@@ -179,5 +191,28 @@ const Login = () => {
     </Container>
   );
 };
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      loading={pending}
+      bg="orange.500"
+      color="white"
+      fontWeight="bold"
+      _hover={{
+        bg: "orange.600",
+      }}
+      _active={{
+        bg: "orange.700",
+      }}
+      size="lg"
+    >
+      Log in
+    </Button>
+  );
+}
 
 export default Login;

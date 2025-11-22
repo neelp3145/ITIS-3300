@@ -11,7 +11,13 @@ const Cart = () => {
 
   return (
     <Box>
-      <Button mx={2} aria-label="view-cart" onClick={handleToggleDialog} bg="orange.500" _hover={{ bg: "orange.600" }}>
+      <Button
+        mx={2}
+        aria-label="view-cart"
+        onClick={handleToggleDialog}
+        bg="orange.500"
+        _hover={{ bg: "orange.600" }}
+      >
         <Icon>
           <CiShoppingCart size="1.5em" />
         </Icon>

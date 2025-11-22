@@ -4,8 +4,8 @@ import React from "react";
 import Image from "next/image";
 import fastbiteLogo from "@/assets/fastbite-logo.png";
 import { Box, Flex, HStack, Link, Button, Badge } from "@chakra-ui/react";
-import { useCart } from '@/contexts/CartContext';
-import { CartDialog } from '@/components/cart/cartDialog';
+import { useCart } from "@/contexts/CartContext";
+import { CartDialog } from "@/components/cart/cartDialog";
 import NextLink from "next/link";
 
 const Header = () => {
@@ -58,13 +58,13 @@ const Header = () => {
       color: "white",
       transform: "translateY(-2px)",
       boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-      textDecoration: "none"
+      textDecoration: "none",
     },
     _active: {
       bg: "#cc4a1a",
       color: "white",
-      transform: "translateY(0)"
-    }
+      transform: "translateY(0)",
+    },
   };
 
   return (
@@ -107,14 +107,20 @@ const Header = () => {
         <Box {...flexItemStyle} gap={3}>
           {/* Restaurant Dashboard Button */}
           <Button css={buttonStyle}>
-            <Link as={NextLink} style={{listStyle: "none"}} href="/restaurant/dashboard">
+            <Link
+              as={NextLink}
+              style={{ listStyle: "none" }}
+              href="/restaurant/dashboard"
+            >
               Restaurant Dashboard
             </Link>
           </Button>
 
           {/* Login Button - Orange with white text */}
           <Button css={buttonStyle}>
-            <Link as={NextLink} style={{listStyle: "none"}} href="/login">Login</Link>
+            <Link as={NextLink} style={{ listStyle: "none" }} href="/login">
+              Login
+            </Link>
           </Button>
 
           {/* Cart Button - Orange with white text */}
