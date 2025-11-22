@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+
 import {
   Container,
   Flex,
@@ -15,7 +15,6 @@ import {
   Input,
   Link,
   Button,
-  Alert,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useActionState } from "react";
@@ -24,36 +23,6 @@ import { login } from "@/app/actions/auth";
 
 const Login = () => {
   const [state, loginAction] = useActionState(login, undefined);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   setError("");
-
-  //   try {
-  //     const result = await signIn("credentials", {
-  //       email,
-  //       password,
-  //       redirect: false,
-  //     });
-
-  //     if (result?.error) {
-  //       setError("Invalid email or password");
-  //     } else {
-  //       router.push("/");
-  //       router.refresh();
-  //     }
-  //   } catch (error) {
-  //     setError("An error occurred. Please try again.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   return (
     <Container maxW="lg" py={12}>
@@ -75,15 +44,6 @@ const Login = () => {
               <Text color="gray.600">Sign in to your FastBite account</Text>
             </Stack>
 
-            {error && (
-              <Alert.Root>
-                <Alert.Content>
-                  <Alert.Title>Error</Alert.Title>
-                  <Alert.Description>{error}</Alert.Description>
-                </Alert.Content>
-              </Alert.Root>
-            )}
-
             <form action={loginAction}>
               <Stack gap={4}>
                 <Field.Root>
@@ -93,9 +53,8 @@ const Login = () => {
                   </Field.Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
                     required
                     bg="white"
@@ -108,7 +67,7 @@ const Login = () => {
                     }}
                   />
                 </Field.Root>
-                {state?.errors?.email && <p>{state.errors.email}</p>}
+                {state?.errors?.email && <Text color="red.600">{state.errors.email}</Text>}
 
                 <Field.Root>
                   <Field.Label htmlFor="password" color="gray.700">
@@ -117,9 +76,8 @@ const Login = () => {
                   </Field.Label>
                   <Input
                     id="password"
+                    name="password"
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     required
                     bg="white"
@@ -132,20 +90,11 @@ const Login = () => {
                     }}
                   />
                 </Field.Root>
-                {state?.errors?.password && (
-                  <div>
-                    <p>Password must:</p>
-                    <ul>
-                      {state.errors.password.map((error) => (
-                        <li key={error}>- {error}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {state?.errors?.password && <Text color="red.600">{state.errors.password}</Text>}
 
                 <Flex justify="space-between" align="center">
-                  <Checkbox.Root color="gray.700">
-                    <Checkbox.HiddenInput id="remember" />
+                    <Checkbox.Root color="gray.700" name="remember">
+                      <Checkbox.HiddenInput id="remember" />
                     <Checkbox.Control />
                     <Checkbox.Label>Remember me</Checkbox.Label>
                   </Checkbox.Root>
@@ -158,9 +107,10 @@ const Login = () => {
                     Forgot password?
                   </Link>
                 </Flex>
+                
+                <SubmitButton />
               </Stack>
             </form>
-            <SubmitButton />
             <Text fontSize="sm" color="gray.600" textAlign="center">
               Don&apos;t have an account?{" "}
               <Link
@@ -199,6 +149,7 @@ function SubmitButton() {
     <Button
       type="submit"
       loading={pending}
+      mt={6}
       bg="orange.500"
       color="white"
       fontWeight="bold"

@@ -6,12 +6,12 @@ import { redirect } from "next/navigation";
 
 const testUser = {
   id: "1",
-  email: "demoman123@fastbite.com.",
+  email: "demoman123@fastbite.com",
   password: "demoman123",
 };
 
 const loginSchema = z.object({
-  email: z.email({ message: "Invalid email address" }).trim(),
+  email: z.string().email({ message: "Invalid email address" }).trim(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" })
@@ -40,7 +40,7 @@ export async function login(prevState: any, formData: FormData) {
   }
 
   await createSession(testUser.id);
-  redirect("/restaurant/dashboard");
+  redirect("/");
 }
 
 export async function logout() {
