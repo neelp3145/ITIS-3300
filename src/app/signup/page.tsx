@@ -18,14 +18,36 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
+const inputStyles = {
+  bg: "white",
+  color: "black",
+  borderColor: "gray.300",
+  marginBottom: "12px",
+  _hover: { borderColor: "gray.400" },
+  _focusVisible: {
+    borderColor: "#ff6b35",
+    boxShadow: "0 0 0 1px #ff6b35",
+  },
+};
+
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [phone, setPhone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [nextPressed, setNextPressed] = useState(false);
   const router = useRouter();
+
+  const toggleNext = () => {
+    setNextPressed((nextPressed) => !nextPressed);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,94 +116,131 @@ const Signup = () => {
             )}
 
             <Stack as="form" gap={4} onSubmit={handleSubmit}>
-              <Field.Root>
-                <Field.Label htmlFor="firstName" color="gray.700">
-                  <Field.RequiredIndicator />
-                  First name
-                </Field.Label>
-                <Input
-                  id="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                  bg="white"
-                  borderColor="gray.300"
-                  color="black"
-                  _hover={{ borderColor: "gray.400" }}
-                  _focusVisible={{
-                    borderColor: "#ff6b35",
-                    boxShadow: "0 0 0 1px #ff6b35",
-                  }}
-                />
-              </Field.Root>
+              <Box hidden={nextPressed ? true : false}>
+                <Field.Root>
+                  <Field.Label htmlFor="firstName" color="gray.700">
+                    <Field.RequiredIndicator />
+                    First name
+                  </Field.Label>
+                  <Input
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                    css={inputStyles}
+                  />
+                </Field.Root>
 
-              <Field.Root>
-                <Field.Label htmlFor="lastName" color="gray.700">
-                  <Field.RequiredIndicator />
-                  Last name
-                </Field.Label>
-                <Input
-                  id="lastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                  bg="white"
-                  color="black"
-                  borderColor="gray.300"
-                  _hover={{ borderColor: "gray.400" }}
-                  _focusVisible={{
-                    borderColor: "#ff6b35",
-                    boxShadow: "0 0 0 1px #ff6b35",
-                  }}
-                />
-              </Field.Root>
+                <Field.Root>
+                  <Field.Label htmlFor="lastName" color="gray.700">
+                    <Field.RequiredIndicator />
+                    Last name
+                  </Field.Label>
+                  <Input
+                    id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                    css={inputStyles}
+                  />
+                </Field.Root>
 
-              <Field.Root>
-                <Field.Label htmlFor="email" color="gray.700">
-                  <Field.RequiredIndicator />
-                  Email address
-                </Field.Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  bg="white"
-                  borderColor="gray.300"
-                  color="black"
-                  _hover={{ borderColor: "gray.400" }}
-                  _focusVisible={{
-                    borderColor: "#ff6b35",
-                    boxShadow: "0 0 0 1px #ff6b35",
-                  }}
-                />
-              </Field.Root>
+                <Field.Root>
+                  <Field.Label htmlFor="email" color="gray.700">
+                    <Field.RequiredIndicator />
+                    Email address
+                  </Field.Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    css={inputStyles}
+                  />
+                </Field.Root>
 
-              <Field.Root>
-                <Field.Label htmlFor="password" color="gray.700">
-                  <Field.RequiredIndicator />
-                  Password
-                </Field.Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  bg="white"
-                  borderColor="gray.300"
-                  color="black"
-                  _hover={{ borderColor: "gray.400" }}
-                  _focusVisible={{
-                    borderColor: "#ff6b35",
-                    boxShadow: "0 0 0 1px #ff6b35",
-                  }}
-                />
-              </Field.Root>
+                <Field.Root>
+                  <Field.Label htmlFor="password" color="gray.700">
+                    <Field.RequiredIndicator />
+                    Password
+                  </Field.Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    css={inputStyles}
+                  />
+                </Field.Root>
+              </Box>
+                <Button
+                  type="submit"
+                  bg="orange.500"
+                  hidden={nextPressed ? true : false}
+                  onClick={toggleNext}
+                  color="white"
+                  fontWeight="bold"
+                  _hover={{ bg: "orange.600" }}
+                  _active={{ bg: "orange.700" }}
+                  size="lg"
+                >
+                  Next
+                </Button>
 
+              {/* Form for address, CHECK FOR VALIDATION ON SIGN UP */}
+              <Box hidden={nextPressed ? false : true}>
+                <Field.Root>
+                  <Field.Label htmlFor="street" color="gray.700">
+                    <Field.RequiredIndicator />
+                    Street Address
+                  </Field.Label>
+                  <Input
+                    id="street"
+                    type="text"
+                    required
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
+                    css={inputStyles}
+                  />
+                </Field.Root>
+
+                <Field.Root>
+                  <Field.Label htmlFor="city" color="gray.700">
+                    <Field.RequiredIndicator />
+                    City
+                  </Field.Label>
+                  <Input id="city" type="text" required value={city} onChange={(e) => setCity(e.target.value)} css={inputStyles} />
+                </Field.Root>
+
+                <Field.Root>
+                  <Field.Label htmlFor="state" color="gray.700">
+                    <Field.RequiredIndicator />
+                    State
+                  </Field.Label>
+                  <Input id="state" type="text" required value={state} onChange={(e) => setState(e.target.value)} css={inputStyles} />
+                </Field.Root>
+
+                <Field.Root>
+                  <Field.Label htmlFor="zip" color="gray.700">
+                    <Field.RequiredIndicator />
+                    ZIP Code
+                  </Field.Label>
+                  <Input id="zip" type="text" required value={zip} onChange={(e) => setZip(e.target.value)} css={inputStyles} />
+                </Field.Root>
+
+                <Field.Root>
+                  <Field.Label htmlFor="phone" color="gray.700">
+                    <Field.RequiredIndicator />
+                    Phone Number
+                  </Field.Label>
+                  <Input id="phone" type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} css={inputStyles} />
+                </Field.Root>
+              </Box>
               <Button
                 type="submit"
+                hidden={nextPressed ? false : true}
                 loading={isLoading}
                 bg="orange.500"
                 color="white"

@@ -21,6 +21,17 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { login } from "@/app/actions/auth";
 
+const inputStyles = {
+  bg: "white",
+  color: "black",
+  borderColor: "gray.300",
+  _hover: { borderColor: "gray.400" },
+  _focusVisible: {
+    borderColor: "#ff6b35",
+    boxShadow: "0 0 0 1px #ff6b35",
+  },
+};
+
 const Login = () => {
   const [state, loginAction] = useActionState(login, undefined);
 
@@ -57,17 +68,12 @@ const Login = () => {
                     type="email"
                     placeholder="you@example.com"
                     required
-                    bg="white"
-                    color="black"
-                    borderColor="gray.300"
-                    _hover={{ borderColor: "gray.400" }}
-                    _focusVisible={{
-                      borderColor: "#ff6b35",
-                      boxShadow: "0 0 0 1px #ff6b35",
-                    }}
+                    {...inputStyles}
                   />
                 </Field.Root>
-                {state?.errors?.email && <Text color="red.600">{state.errors.email}</Text>}
+                {state?.errors?.email && (
+                  <Text color="red.600">{state.errors.email}</Text>
+                )}
 
                 <Field.Root>
                   <Field.Label htmlFor="password" color="gray.700">
@@ -80,21 +86,16 @@ const Login = () => {
                     type="password"
                     placeholder="••••••••"
                     required
-                    bg="white"
-                    color="black"
-                    borderColor="gray.300"
-                    _hover={{ borderColor: "gray.400" }}
-                    _focusVisible={{
-                      borderColor: "#ff6b35",
-                      boxShadow: "0 0 0 1px #ff6b35",
-                    }}
+                    css={inputStyles}
                   />
                 </Field.Root>
-                {state?.errors?.password && <Text color="red.600">{state.errors.password}</Text>}
+                {state?.errors?.password && (
+                  <Text color="red.600">{state.errors.password}</Text>
+                )}
 
                 <Flex justify="space-between" align="center">
-                    <Checkbox.Root color="gray.700" name="remember">
-                      <Checkbox.HiddenInput id="remember" />
+                  <Checkbox.Root color="gray.700" name="remember">
+                    <Checkbox.HiddenInput id="remember" />
                     <Checkbox.Control />
                     <Checkbox.Label>Remember me</Checkbox.Label>
                   </Checkbox.Root>
@@ -107,7 +108,7 @@ const Login = () => {
                     Forgot password?
                   </Link>
                 </Flex>
-                
+
                 <SubmitButton />
               </Stack>
             </form>

@@ -50,7 +50,6 @@ export async function login(prevState: any, formData: FormData) {
   redirect("/");
 }
 
-
 const signupSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }).trim(),
   lastName: z.string().min(1, { message: "Last name is required" }).trim(),
