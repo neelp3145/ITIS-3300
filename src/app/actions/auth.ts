@@ -50,8 +50,46 @@ export async function login(prevState: any, formData: FormData) {
   redirect("/");
 }
 
+
+const signupSchema = z.object({
+  firstName: z.string().min(1, { message: "First name is required" }).trim(),
+  lastName: z.string().min(1, { message: "Last name is required" }).trim(),
+  email: z.string().email({ message: "Invalid email address" }).trim(),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" })
+    .regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
+    .regex(/[0-9]/, { message: "Contain at least one number." })
+    .trim(),
+});
+
 export async function signup(prevState: any, formData: FormData) {
-  // Signup logic would go here. For now, we just redirect to login.
+  const result = signupSchema.safeParse(Object.fromEntries(formData));
+
+  if (!result.success) {
+    return { errors: result.error.flatten().fieldErrors };
+  }
+
+  const { firstName, lastName, email, password } = result.data;
+  await connectDB();
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return { errors: { email: ["Email is already registered"] } };
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = new User({
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+  });
+
+  await newUser.save();
+
+  await createSession(newUser._id.toString());
   redirect("/login");
 }
 
