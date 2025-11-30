@@ -21,7 +21,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   if (isPublicRoute && session?.userId) {
-    return NextResponse.redirect(new URL("/restaurant/dashboard", req.nextUrl));
+    return NextResponse.redirect(new URL("/", req.nextUrl));
   }
   return NextResponse.next();
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useActionState, useState } from "react";
+import { signup } from "@/app/actions/signup";
+
 import {
   Container,
   Flex,
@@ -14,9 +14,9 @@ import {
   Input,
   Link,
   Button,
-  Alert,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useFormStatus } from "react-dom";
 
 const inputStyles = {
   bg: "white",
@@ -31,59 +31,11 @@ const inputStyles = {
 };
 
 const Signup = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zip, setZip] = useState("");
-  const [phone, setPhone] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [state, signupAction] = useActionState(signup, undefined);
   const [nextPressed, setNextPressed] = useState(false);
-  const router = useRouter();
 
   const toggleNext = () => {
     setNextPressed((nextPressed) => !nextPressed);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-    try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, lastName, email, password }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        setError(data?.message || "Signup failed");
-        return;
-      }
-
-      const signInResult = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (signInResult?.error) {
-        setError("Account created. Please sign in.");
-        router.push("/login");
-      } else {
-        router.push("/");
-        router.refresh();
-      }
-    } catch {
-      setError("An error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
@@ -106,16 +58,7 @@ const Signup = () => {
               <Text color="gray.600">Sign up for FastBite</Text>
             </Stack>
 
-            {error && (
-              <Alert.Root>
-                <Alert.Content>
-                  <Alert.Title>Error</Alert.Title>
-                  <Alert.Description>{error}</Alert.Description>
-                </Alert.Content>
-              </Alert.Root>
-            )}
-
-            <Stack as="form" gap={4} onSubmit={handleSubmit}>
+            <form action={signupAction}>
               <Box hidden={nextPressed ? true : false}>
                 <Field.Root>
                   <Field.Label htmlFor="firstName" color="gray.700">
@@ -124,8 +67,8 @@ const Signup = () => {
                   </Field.Label>
                   <Input
                     id="firstName"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    name="firstName"
+                    type="text"
                     required
                     css={inputStyles}
                   />
@@ -138,8 +81,8 @@ const Signup = () => {
                   </Field.Label>
                   <Input
                     id="lastName"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    name="lastName"
+                    type="text"
                     required
                     css={inputStyles}
                   />
@@ -152,9 +95,8 @@ const Signup = () => {
                   </Field.Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     required
                     css={inputStyles}
                   />
@@ -167,27 +109,26 @@ const Signup = () => {
                   </Field.Label>
                   <Input
                     id="password"
+                    name="password"
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     required
                     css={inputStyles}
                   />
                 </Field.Root>
               </Box>
-                <Button
-                  type="submit"
-                  bg="orange.500"
-                  hidden={nextPressed ? true : false}
-                  onClick={toggleNext}
-                  color="white"
-                  fontWeight="bold"
-                  _hover={{ bg: "orange.600" }}
-                  _active={{ bg: "orange.700" }}
-                  size="lg"
-                >
-                  Next
-                </Button>
+              <Button
+                type="submit"
+                bg="orange.500"
+                hidden={nextPressed ? true : false}
+                onClick={toggleNext}
+                color="white"
+                fontWeight="bold"
+                _hover={{ bg: "orange.600" }}
+                _active={{ bg: "orange.700" }}
+                size="lg"
+              >
+                Next
+              </Button>
 
               {/* Form for address, CHECK FOR VALIDATION ON SIGN UP */}
               <Box hidden={nextPressed ? false : true}>
@@ -200,8 +141,7 @@ const Signup = () => {
                     id="street"
                     type="text"
                     required
-                    value={street}
-                    onChange={(e) => setStreet(e.target.value)}
+                    name="street"
                     css={inputStyles}
                   />
                 </Field.Root>
@@ -211,7 +151,13 @@ const Signup = () => {
                     <Field.RequiredIndicator />
                     City
                   </Field.Label>
-                  <Input id="city" type="text" required value={city} onChange={(e) => setCity(e.target.value)} css={inputStyles} />
+                  <Input
+                    id="city"
+                    type="text"
+                    required
+                    name="city"
+                    css={inputStyles}
+                  />
                 </Field.Root>
 
                 <Field.Root>
@@ -219,7 +165,13 @@ const Signup = () => {
                     <Field.RequiredIndicator />
                     State
                   </Field.Label>
-                  <Input id="state" type="text" required value={state} onChange={(e) => setState(e.target.value)} css={inputStyles} />
+                  <Input
+                    id="state"
+                    type="text"
+                    required
+                    name="state"
+                    css={inputStyles}
+                  />
                 </Field.Root>
 
                 <Field.Root>
@@ -227,7 +179,13 @@ const Signup = () => {
                     <Field.RequiredIndicator />
                     ZIP Code
                   </Field.Label>
-                  <Input id="zip" type="text" required value={zip} onChange={(e) => setZip(e.target.value)} css={inputStyles} />
+                  <Input
+                    id="zip"
+                    type="text"
+                    required
+                    name="zip"
+                    css={inputStyles}
+                  />
                 </Field.Root>
 
                 <Field.Root>
@@ -235,23 +193,17 @@ const Signup = () => {
                     <Field.RequiredIndicator />
                     Phone Number
                   </Field.Label>
-                  <Input id="phone" type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} css={inputStyles} />
+                  <Input
+                    id="phone"
+                    type="tel"
+                    required
+                    name="phone"
+                    css={inputStyles}
+                  />
                 </Field.Root>
+                <SubmitButton nextPressed={nextPressed} />
               </Box>
-              <Button
-                type="submit"
-                hidden={nextPressed ? false : true}
-                loading={isLoading}
-                bg="orange.500"
-                color="white"
-                fontWeight="bold"
-                _hover={{ bg: "orange.600" }}
-                _active={{ bg: "orange.700" }}
-                size="lg"
-              >
-                Sign up
-              </Button>
-            </Stack>
+            </form>
 
             <Text fontSize="sm" color="gray.600" textAlign="center">
               Already have an account?{" "}
@@ -271,4 +223,28 @@ const Signup = () => {
   );
 };
 
+function SubmitButton({ nextPressed }: { nextPressed: boolean }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      hidden={nextPressed ? false : true}
+      loading={pending}
+      mt={6}
+      bg="orange.500"
+      color="white"
+      fontWeight="bold"
+      _hover={{
+        bg: "orange.600",
+      }}
+      _active={{
+        bg: "orange.700",
+      }}
+      size="lg"
+    >
+      Sign Up
+    </Button>
+  );
+}
 export default Signup;

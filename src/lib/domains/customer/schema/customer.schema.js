@@ -14,10 +14,19 @@ const AddressSchema = new Schema(
 );
 
 const CustomerSchema = new Schema({
-  phoneNumber: { type: String, required: true, trim: true },
+  phoneNumber: { type: String, required: true, trim: true, match: /^[0-9]{10}$/ },
   address: { type: AddressSchema, required: true },
   orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }],
 });
 
-const Customer = User.discriminator("customer", CustomerSchema);
+const discriminatorName = "customer";
+
+let Customer =
+  (User.discriminators && User.discriminators[discriminatorName]) ||
+  mongoose.models[discriminatorName];
+
+if (!Customer) {
+  Customer = User.discriminator(discriminatorName, CustomerSchema);
+}
+
 export default Customer;

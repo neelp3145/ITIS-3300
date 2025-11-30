@@ -15,10 +15,10 @@ export const orderController = {
         message: 'Order created successfully'
       };
     } catch (error) {
-      console.error('Error creating order:', error);
+      console.error("Error creating order:", error);
       return {
         ok: false,
-        message: 'Failed to create order',
+        message: "Failed to create order",
         error: error.message
       };
     }

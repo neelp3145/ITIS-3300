@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
 import {
   Container,
   Flex,
@@ -130,7 +127,7 @@ const Login = () => {
                 Demo Credentials:
               </Text>
               <Text fontSize="sm" color="gray.600">
-                Customer: demo@fastbite.com / demo123
+                Customer: fastbyte.demo@example.com / Password123!
               </Text>
               <Text fontSize="sm" color="gray.600">
                 Admin: admin@fastbite.com / admin123
