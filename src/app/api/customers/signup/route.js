@@ -6,9 +6,12 @@ import {
 } from "../../../../lib/domains/user/auth.js";
 
 export async function POST(req) {
+  console.log("HIT /api/customers/signup");
+
   try {
     const body = await req.json();
     const { status, body: payload } = await signupCustomerController(body);
+    console.log("Reqest body:", body);
 
     if ((status === 201 || status === 200) && payload?.data) {
       const token = signToken({ _id: payload.data._id, role: "customer" });

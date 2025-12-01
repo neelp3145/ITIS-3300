@@ -1,8 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { signup } from "@/app/actions/signup";
-
+import { useState, FormEvent } from "react";
 import {
   Container,
   Flex,
@@ -16,7 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
 const inputStyles = {
   bg: "white",
@@ -31,11 +29,61 @@ const inputStyles = {
 };
 
 const Signup = () => {
-  const [state, signupAction] = useActionState(signup, undefined);
+  const router = useRouter();
   const [nextPressed, setNextPressed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const toggleNext = () => {
-    setNextPressed((nextPressed) => !nextPressed);
+    setNextPressed((prev) => !prev);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormError(null);
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    const payload = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      phoneNumber: formData.get("phone"),
+      address: {
+        street: formData.get("street"),
+        city: formData.get("city"),
+        state: formData.get("state"),
+        zip: formData.get("zip"),
+      },
+    };
+
+    try {
+      const res = await fetch("/api/customers/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      console.log("Signup response:", data);
+
+      if (!res.ok || data.ok === false) {
+        const msg = Array.isArray(data?.errors)
+          ? data.errors.map((e: any) => e.msg).join(", ")
+          : data?.msg || "Signup failed";
+        setFormError(msg);
+        setLoading(false);
+        return;
+      }
+
+      router.push("/");
+    } catch (err) {
+      console.error("Signup error:", err);
+      setFormError("Unexpected error during signup. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,7 +106,21 @@ const Signup = () => {
               <Text color="gray.600">Sign up for FastBite</Text>
             </Stack>
 
-            <form action={signupAction}>
+            {formError && (
+              <Box
+                bg="red.50"
+                border="1px solid"
+                borderColor="red.200"
+                color="red.700"
+                borderRadius="md"
+                p={3}
+              >
+                {formError}
+              </Box>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              {/* Step 1: Basic info */}
               <Box hidden={nextPressed ? true : false}>
                 <Field.Root>
                   <Field.Label htmlFor="firstName" color="gray.700">
@@ -115,22 +177,25 @@ const Signup = () => {
                     css={inputStyles}
                   />
                 </Field.Root>
-              </Box>
-              <Button
-                type="submit"
-                bg="orange.500"
-                hidden={nextPressed ? true : false}
-                onClick={toggleNext}
-                color="white"
-                fontWeight="bold"
-                _hover={{ bg: "orange.600" }}
-                _active={{ bg: "orange.700" }}
-                size="lg"
-              >
-                Next
-              </Button>
 
-              {/* Form for address, CHECK FOR VALIDATION ON SIGN UP */}
+                {/* NEXT button should NOT submit the form */}
+                <Button
+                  type="button"
+                  bg="orange.500"
+                  hidden={nextPressed ? true : false}
+                  onClick={toggleNext}
+                  color="white"
+                  fontWeight="bold"
+                  _hover={{ bg: "orange.600" }}
+                  _active={{ bg: "orange.700" }}
+                  size="lg"
+                  mt={4}
+                >
+                  Next
+                </Button>
+              </Box>
+
+              {/* Step 2: Address + phone */}
               <Box hidden={nextPressed ? false : true}>
                 <Field.Root>
                   <Field.Label htmlFor="street" color="gray.700">
@@ -201,7 +266,24 @@ const Signup = () => {
                     css={inputStyles}
                   />
                 </Field.Root>
-                <SubmitButton nextPressed={nextPressed} />
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  mt={6}
+                  bg="orange.500"
+                  color="white"
+                  fontWeight="bold"
+                  _hover={{
+                    bg: "orange.600",
+                  }}
+                  _active={{
+                    bg: "orange.700",
+                  }}
+                  size="lg"
+                >
+                  {loading ? "Signing up..." : "Sign Up"}
+                </Button>
               </Box>
             </form>
 
@@ -223,28 +305,4 @@ const Signup = () => {
   );
 };
 
-function SubmitButton({ nextPressed }: { nextPressed: boolean }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      hidden={nextPressed ? false : true}
-      loading={pending}
-      mt={6}
-      bg="orange.500"
-      color="white"
-      fontWeight="bold"
-      _hover={{
-        bg: "orange.600",
-      }}
-      _active={{
-        bg: "orange.700",
-      }}
-      size="lg"
-    >
-      Sign Up
-    </Button>
-  );
-}
 export default Signup;

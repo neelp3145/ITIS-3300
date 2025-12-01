@@ -16,7 +16,9 @@ const signupSchema = z.object({
     .regex(/[a-zA-Z]/, { message: "Must contain at least one letter" })
     .regex(/[0-9]/, { message: "Must contain at least one number" })
     .trim(),
-  phone: z.string().regex(/^[0-9]{10}$/, { message: "Phone must be 10 digits" }),
+  phone: z
+    .string()
+    .regex(/^[0-9]{10}$/, { message: "Phone must be 10 digits" }),
   street: z.string().min(1, { message: "Street is required" }).trim(),
   city: z.string().min(1, { message: "City is required" }).trim(),
   state: z.string().min(1, { message: "State is required" }).trim(),
@@ -25,21 +27,21 @@ const signupSchema = z.object({
 
 export async function signup(prevState: any, formData: FormData) {
   const result = signupSchema.safeParse(Object.fromEntries(formData));
-  
+
   if (!result.success) {
     return { errors: result.error.flatten().fieldErrors };
   }
 
-  const { 
-    firstName, 
-    lastName, 
-    email, 
-    password, 
-    phone, 
-    street, 
-    city, 
-    state, 
-    zip 
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    phone,
+    street,
+    city,
+    state,
+    zip,
   } = result.data;
 
   try {
@@ -56,8 +58,11 @@ export async function signup(prevState: any, formData: FormData) {
 
     // Create new customer
     console.log("Creating customer with data:", {
-      firstName, lastName, email, phone,
-      address: { street, city, state, zip }
+      firstName,
+      lastName,
+      email,
+      phone,
+      address: { street, city, state, zip },
     });
 
     const newCustomer = await Customer.create({
@@ -77,10 +82,12 @@ export async function signup(prevState: any, formData: FormData) {
 
     await newCustomer.save();
     console.log("New customer saved successfully:", newCustomer);
-    
+
     redirect("/");
   } catch (err) {
     console.error("Signup error:", err);
-    return { errors: { form: ["Unexpected error during signup. Please try again."] } };
+    return {
+      errors: { form: ["Unexpected error during signup. Please try again."] },
+    };
   }
 }
