@@ -13,7 +13,6 @@ import {
   Link,
   Button,
 } from "@chakra-ui/react";
-import { connect } from "mongoose";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -33,23 +32,23 @@ const Login = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
-    
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setFormError(null);
       setLoading(true);
-  
+
       const formData = new FormData(e.currentTarget);
-  
-      const payload = {
-        email: formData.get("email"),
-        password: formData.get("password"),
-      };
+      const email = String(formData.get("email") || "").toLowerCase();
+      const password = String(formData.get("password") || "");
 
-     
+      const isEmployee = email.endsWith("@fastbyte.com");
+      const endpoint = isEmployee ? "/api/employees/login" : "/api/customers/login";
 
-    try {      
-      const res = await fetch("/api/customers/login", {
+      const payload = { email, password };
+
+      try {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -60,20 +59,20 @@ const Login = () => {
 
       if (!res.ok || data.ok === false) {
         const msg = Array.isArray(data?.errors)
-          ? data.errors.map((e: any) => e.msg).join(", ")
-          : data?.msg || "Login failed";
+        ? data.errors.map((e: any) => e.msg).join(", ")
+        : data?.msg || "Login failed";
         setFormError(msg);
         setLoading(false);
         return;
       }
 
       router.push("/");
-    } catch (err) {
+      } catch (err) {
       console.error("Login error:", err);
       setFormError("Unexpected error during login. Please try again.");
       setLoading(false);
-    }
-  };
+      }
+    };
   
 
   return (

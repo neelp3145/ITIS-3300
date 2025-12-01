@@ -32,17 +32,25 @@ export async function login(prevState: any, formData: FormData) {
       return { errors: { email: ["Invalid email or password"] } };
     }
 
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-      return { errors: { email: ["Invalid email or password"] } };
+    if (user.role == "customer") {
+      const res = await fetch("/api/customers/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+    } else if (user.role == "employee") {
+      const res = await fetch("/api/employees/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
     }
 
-    await createSession(user._id.toString());
-    redirect("/");
   } catch (err) {
     console.error("Login error:", err);
-    return { errors: { form: ["Unexpected error. Please try again."] } };
+    return { errors: { general: ["Unexpected error during login. Please try again."] } };
   }
+      
 }
 
 export async function logout() {
