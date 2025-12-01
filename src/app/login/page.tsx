@@ -42,7 +42,7 @@ const Login = () => {
       const email = String(formData.get("email") || "").toLowerCase();
       const password = String(formData.get("password") || "");
 
-      const isEmployee = email.endsWith("@fastbyte.com");
+      const isEmployee = email.endsWith("@fastbite.com");
       const endpoint = isEmployee ? "/api/employees/login" : "/api/customers/login";
 
       const payload = { email, password };
@@ -59,7 +59,7 @@ const Login = () => {
 
       if (!res.ok || data.ok === false) {
         const msg = Array.isArray(data?.errors)
-        ? data.errors.map((e: any) => e.msg).join(", ")
+        ? data.errors.map((error: any) => error.msg).join(", ")
         : data?.msg || "Login failed";
         setFormError(msg);
         setLoading(false);
@@ -188,17 +188,19 @@ const Login = () => {
             </Text>
 
             {/* Demo Credentials */}
-            <Box mt={4} p={4} bg="gray.50" borderRadius="md">
-              <Text fontSize="sm" color="gray.600" fontWeight="bold" mb={2}>
-                Demo Credentials:
-              </Text>
-              <Text fontSize="sm" color="gray.600">
-                Customer: fastbyte.demo@example.com / Password123!
-              </Text>
-              <Text fontSize="sm" color="gray.600">
-                Admin: admin@fastbite.com / admin123
-              </Text>
-            </Box>
+            {process.env.NODE_ENV !== "production" && (
+              <Box mt={4} p={4} bg="gray.50" borderRadius="md">
+                <Text fontSize="sm" color="gray.600" fontWeight="bold" mb={2}>
+                  Demo Credentials:
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  Customer: fastbyte.demo@example.com / Password123!
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  Admin: admin@fastyte.com / admin123
+                </Text>
+              </Box>
+            )}
           </Stack>
         </Box>
       </Flex>
