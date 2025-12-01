@@ -14,9 +14,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
-import { login } from "@/app/actions/auth";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 const inputStyles = {
   bg: "white",
@@ -30,7 +29,51 @@ const inputStyles = {
 };
 
 const Login = () => {
-  const [state, loginAction] = useActionState(login, undefined);
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const [formError, setFormError] = useState<string | null>(null);
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setFormError(null);
+      setLoading(true);
+
+      const formData = new FormData(e.currentTarget);
+      const email = String(formData.get("email") || "").toLowerCase();
+      const password = String(formData.get("password") || "");
+
+      const isEmployee = email.endsWith("@fastbite.com");
+      const endpoint = isEmployee ? "/api/employees/login" : "/api/customers/login";
+
+      const payload = { email, password };
+
+      try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      console.log("Login response:", data);
+
+      if (!res.ok || data.ok === false) {
+        const msg = Array.isArray(data?.errors)
+        ? data.errors.map((error: any) => error.msg).join(", ")
+        : data?.msg || "Login failed";
+        setFormError(msg);
+        setLoading(false);
+        return;
+      }
+
+      router.push("/");
+      } catch (err) {
+      console.error("Login error:", err);
+      setFormError("Unexpected error during login. Please try again.");
+      setLoading(false);
+      }
+    };
+  
 
   return (
     <Container maxW="lg" py={12}>
@@ -52,7 +95,20 @@ const Login = () => {
               <Text color="gray.600">Sign in to your FastBite account</Text>
             </Stack>
 
-            <form action={loginAction}>
+            {formError && (
+              <Box
+                bg="red.50"
+                border="1px solid"
+                borderColor="red.200"
+                color="red.700"
+                borderRadius="md"
+                p={3}
+              >
+                {formError}
+              </Box>
+            )}
+
+            <form onSubmit={handleSubmit}>
               <Stack gap={4}>
                 <Field.Root>
                   <Field.Label htmlFor="email" color="gray.700">
@@ -68,9 +124,6 @@ const Login = () => {
                     {...inputStyles}
                   />
                 </Field.Root>
-                {state?.errors?.email && (
-                  <Text color="red.600">{state.errors.email}</Text>
-                )}
 
                 <Field.Root>
                   <Field.Label htmlFor="password" color="gray.700">
@@ -86,9 +139,6 @@ const Login = () => {
                     css={inputStyles}
                   />
                 </Field.Root>
-                {state?.errors?.password && (
-                  <Text color="red.600">{state.errors.password}</Text>
-                )}
 
                 <Flex justify="space-between" align="center">
                   <Checkbox.Root color="gray.700" name="remember">
@@ -106,7 +156,23 @@ const Login = () => {
                   </Link>
                 </Flex>
 
-                <SubmitButton />
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  mt={6}
+                  bg="orange.500"
+                  color="white"
+                  fontWeight="bold"
+                  _hover={{
+                    bg: "orange.600",
+                  }}
+                  _active={{
+                    bg: "orange.700",
+                  }}
+                  size="lg"
+                >
+                  {loading ? "Logging in..." : "Log In"}
+                </Button>
               </Stack>
             </form>
             <Text fontSize="sm" color="gray.600" textAlign="center">
@@ -122,46 +188,24 @@ const Login = () => {
             </Text>
 
             {/* Demo Credentials */}
-            <Box mt={4} p={4} bg="gray.50" borderRadius="md">
-              <Text fontSize="sm" color="gray.600" fontWeight="bold" mb={2}>
-                Demo Credentials:
-              </Text>
-              <Text fontSize="sm" color="gray.600">
-                Customer: fastbyte.demo@example.com / Password123!
-              </Text>
-              <Text fontSize="sm" color="gray.600">
-                Admin: admin@fastbite.com / admin123
-              </Text>
-            </Box>
+            {process.env.NODE_ENV !== "production" && (
+              <Box mt={4} p={4} bg="gray.50" borderRadius="md">
+                <Text fontSize="sm" color="gray.600" fontWeight="bold" mb={2}>
+                  Demo Credentials:
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  Customer: fastbyte.demo@example.com / Password123!
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  Admin: admin@fastyte.com / admin123
+                </Text>
+              </Box>
+            )}
           </Stack>
         </Box>
       </Flex>
     </Container>
   );
 };
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      loading={pending}
-      mt={6}
-      bg="orange.500"
-      color="white"
-      fontWeight="bold"
-      _hover={{
-        bg: "orange.600",
-      }}
-      _active={{
-        bg: "orange.700",
-      }}
-      size="lg"
-    >
-      Log in
-    </Button>
-  );
-}
 
 export default Login;
