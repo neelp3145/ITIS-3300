@@ -111,14 +111,13 @@ export async function signupEmployeeController(bodyRaw) {
   }
 
   try {
-    // Hash password before saving
-    const hashed = await bcrypt.hash(password, 10);
+    // Don't need to hash here, schema pre-save hook will handle it
 
     const newEmployee = await Employee.create({
       firstName,
       lastName,
       email,
-      password: hashed,
+      password,
       roleTitle,
       hireDate: hireDate ? new Date(hireDate) : undefined,
       isActive,

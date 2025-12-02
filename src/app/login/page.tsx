@@ -197,7 +197,7 @@ const Login = () => {
                   Customer: fastbyte.demo@example.com / Password123!
                 </Text>
                 <Text fontSize="sm" color="gray.600">
-                  Admin: admin@fastyte.com / admin123
+                  Admin: admin@fastbyte.com / admin123
                 </Text>
               </Box>
             )}

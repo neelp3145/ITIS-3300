@@ -117,12 +117,13 @@ export async function signupCustomerController(bodyRaw) {
   }
 
   try {
-    const hashed = await bcrypt.hash(password, 10);
+    // Don't need to hash here, schema pre-save hook will handle it
+    
     const newCustomer = await Customer.create({
       firstName,
       lastName,
       email,
-      password: hashed,
+      password,
       phoneNumber,
       address,
       orderHistory,
@@ -184,6 +185,9 @@ export async function loginCustomerController(bodyRaw) {
       return { status: 404, body: { ok: false, msg: "User not found" } };
     }
 
+    console.log(password, customer.password);
+    const hashDebug = await bcrypt.hash(password, 10);
+    console.log("Computed hash:", hashDebug);
     const isMatch = await bcrypt.compare(password, customer.password);
     if (!isMatch) {
       return { status: 401, body: { ok: false, msg: "Invalid credentials" } };
