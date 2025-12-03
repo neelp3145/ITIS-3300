@@ -1,0 +1,4 @@
+In this deliverable, the files that were submitted were:
+
+note-deliverable-5.txt                  - inside the root folder
+Lab Rats – Deliverable 5.pdf            - inside the "project-reports" folder
