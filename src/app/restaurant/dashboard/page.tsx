@@ -117,6 +117,40 @@ const mockStats: KitchenStats = {
   ],
 };
 
+// User types for authentication
+interface User {
+  id: string;
+  email: string;
+  role: "customer" | "restaurant" | "admin" | "driver";
+  name?: string;
+  restaurantId?: string;
+}
+
+// Authentication service mock
+const authService = {
+  getCurrentUser: (): User | null => {
+    // Check localStorage for user data (in real app, use secure cookies/tokens)
+    if (typeof window !== "undefined") {
+      const userData = localStorage.getItem("fastbite_user");
+      if (userData) {
+        return JSON.parse(userData);
+      }
+    }
+    return null;
+  },
+
+  isRestaurantStaff: (user: User | null): boolean => {
+    return user?.role === "restaurant" || user?.role === "admin";
+  },
+
+  logout: () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("fastbite_user");
+      window.location.href = "/login";
+    }
+  }
+};
+
 // Custom Alert component
 const CustomAlert = ({
   status,
@@ -763,20 +797,25 @@ export default function RestaurantDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showClearAllConfirm, setShowClearAllConfirm] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const router = useRouter();
 
-  // Simulate authentication
-  const isAuthenticated = true;
-  const user = { role: "admin" };
-
-  // Fetch data on component mount
+  // Check authentication on component mount
   useEffect(() => {
-    if (isAuthenticated && user?.role === "admin") {
-      fetchAllData();
-    } else {
-      setIsLoading(false);
+    const user = authService.getCurrentUser();
+    setCurrentUser(user);
+
+    if (!user || !authService.isRestaurantStaff(user)) {
+      // Redirect to login if not authenticated or not restaurant staff
+      setTimeout(() => {
+        router.push("/login?redirect=/restaurant/dashboard&message=Please login as restaurant staff");
+      }, 100);
+      return;
     }
-  }, [isAuthenticated, user]);
+
+    // If authenticated as restaurant staff, fetch data
+    fetchAllData();
+  }, [router]);
 
   const fetchAllData = async () => {
     setIsLoading(true);
@@ -833,6 +872,10 @@ export default function RestaurantDashboard() {
     } catch (error) {
       console.error("Error clearing all orders:", error);
     }
+  };
+
+  const handleLogout = () => {
+    authService.logout();
   };
 
   // Tab content based on active tab
@@ -933,6 +976,72 @@ export default function RestaurantDashboard() {
     }
   };
 
+  // Check if user is authenticated as restaurant staff
+  if (!currentUser || !authService.isRestaurantStaff(currentUser)) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#f9fafb",
+          padding: "2rem",
+        }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
+          <CustomAlert status="warning">
+            You need to be logged in as restaurant staff to access this dashboard.
+          </CustomAlert>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              marginTop: "1.5rem",
+            }}
+          >
+            <button
+              onClick={() => router.push("/login")}
+              style={{
+                backgroundColor: "#ea580c",
+                color: "white",
+                padding: "0.75rem 1.5rem",
+                border: "none",
+                borderRadius: "0.375rem",
+                cursor: "pointer",
+                fontSize: "1rem",
+                fontWeight: "500",
+              }}
+            >
+              Go to Login
+            </button>
+            <button
+              onClick={() => router.push("/")}
+              style={{
+                backgroundColor: "transparent",
+                color: "#6b7280",
+                padding: "0.75rem 1.5rem",
+                border: "1px solid #d1d5db",
+                borderRadius: "0.375rem",
+                cursor: "pointer",
+                fontSize: "1rem",
+              }}
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Loading state
   if (isLoading) {
     return (
@@ -982,17 +1091,6 @@ export default function RestaurantDashboard() {
     );
   }
 
-  // Authentication check
-  if (!isAuthenticated || user?.role !== "admin") {
-    return (
-      <div style={{ padding: "1.5rem" }}>
-        <CustomAlert status="warning">
-          You need to be logged in as admin to access this page.
-        </CustomAlert>
-      </div>
-    );
-  }
-
   return (
     <div
       style={{
@@ -1001,7 +1099,7 @@ export default function RestaurantDashboard() {
         minHeight: "100vh",
       }}
     >
-      {/* Header with Clear All Button */}
+      {/* Header with User Info and Clear All Button */}
       <div
         style={{
           display: "flex",
@@ -1025,21 +1123,66 @@ export default function RestaurantDashboard() {
               gap: "0.25rem",
             }}
           >
-            <h1
-              style={{
-                fontSize: "2.25rem",
-                fontWeight: "bold",
-                color: "#ea580c",
-              }}
-            >
-              FastBite Restaurant Dashboard
-            </h1>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <h1
+                style={{
+                  fontSize: "2.25rem",
+                  fontWeight: "bold",
+                  color: "#ea580c",
+                }}
+              >
+                FastBite Restaurant Dashboard
+              </h1>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  backgroundColor: "#f0f9ff",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.5rem",
+                  border: "1px solid #bae6fd",
+                }}
+              >
+                <span style={{ fontSize: "0.875rem", color: "#0369a1" }}>
+                  👤 {currentUser.name || currentUser.email}
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.75rem",
+                    backgroundColor: "#ea580c",
+                    color: "white",
+                    padding: "0.125rem 0.5rem",
+                    borderRadius: "0.25rem",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {currentUser.role.toUpperCase()}
+                </span>
+              </div>
+            </div>
             <span style={{ color: "#6b7280" }}>
               Manage orders, kitchen queue, and deliveries
             </span>
           </div>
 
           <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <button
+              onClick={handleLogout}
+              style={{
+                backgroundColor: "transparent",
+                color: "#6b7280",
+                padding: "0.5rem 1rem",
+                border: "1px solid #d1d5db",
+                borderRadius: "0.375rem",
+                cursor: "pointer",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+              }}
+            >
+              Logout
+            </button>
+
             {showClearAllConfirm ? (
               <div
                 style={{
